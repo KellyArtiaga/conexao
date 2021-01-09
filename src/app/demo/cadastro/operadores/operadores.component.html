@@ -1,0 +1,80 @@
+<div class="row">
+  <app-filter (onChange)="changeFilter($event)"></app-filter>
+</div>
+
+<div class="row">
+  <div class="header deep-purple p-24 col-md-12" fxLayout="column" fxLayoutAlign="center center" fxLayout.gt-xs="row"
+    fxLayoutAlign.gt-xs="space-between center">
+    <a *ngIf="auth.canWrite('operadores')" id="btn-add" class="btn-add mt-16 mt-sm-0 align-right" [routerLink]="['/cadastro/operadores/novo']">
+      <span class="m-2"><i class="icon-add feather icon-plus"></i> Novo Operador</span>
+    </a>
+    <a id="btn-export" class="btn-export mt-16 mt-sm-0 align-right" (click)="exportData()">
+      <span class="m-2"><i class="icon-export feather icon-printer"></i> Export</span>
+    </a>
+    <!-- <a id="btn-export" class="btn-export mt-16 mt-sm-0 align-right" [routerLink]="['/cadastro/usuarios']">
+          <span class="m-2"><i class="icon-export feather icon-printer"></i> Export</span>
+      </a> -->
+  </div>
+</div>
+<div class="row">
+  <div class="col-xl-12">
+    <app-card cardTitle="Listagem" cardClass="code-table" blockClass="pb-0 pt-0">
+      <mat-table matTableExporter #exporter="matTableExporter" [dataSource]="dataSource" class="table-hover main-table" [hidden]="noResult">
+
+        <!-- Data Column -->
+       <ng-container matColumnDef="codigo">
+          <mat-header-cell *matHeaderCellDef> Codigo </mat-header-cell>
+          <mat-cell *matCellDef="let row"> {{row.codigo}} </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="razaoSocial">
+          <mat-header-cell *matHeaderCellDef> Razão Social </mat-header-cell>
+          <mat-cell *matCellDef="let row"> {{row.razaoSocial}} </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="cnpj">
+          <mat-header-cell *matHeaderCellDef> CNPJ </mat-header-cell>
+          <mat-cell *matCellDef="let row"> {{row.cnpj}} </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="nomeContato">
+          <mat-header-cell *matHeaderCellDef> Nome </mat-header-cell>
+          <mat-cell *matCellDef="let row"> {{row.nomeContato}} </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="telefoneContato">
+          <mat-header-cell *matHeaderCellDef> Telefone </mat-header-cell>
+          <mat-cell *matCellDef="let row"> {{row.telefoneContato}} </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="active">
+          <mat-header-cell *matHeaderCellDef> Status </mat-header-cell>
+          <mat-cell *matCellDef="let row"> {{ row.active? 'Ativo':'Bloqueado' }} </mat-cell>
+        </ng-container>
+
+        <!-- Action Column -->
+        <ng-container matColumnDef="buttons">
+          <th class="alinhamento" mat-header-cell *matHeaderCellDef id="titColumn-empresa-acoes" scope="col">
+            Ações
+          </th>
+          <td class="action-btn" mat-cell *matCellDef="let row">
+            <button class="mr-2" id="btn-editar" (click)="edit(row)" *ngIf="auth.canWrite('operadores')">
+              <i class="icon-edit feather icon-edit"></i>
+            </button>
+            <button class="mr-2" id="btn-excluir" (click)="confirm(row)" *ngIf="auth.canDelete('operadores')">
+              <i class="icon-remove feather icon-trash"></i>
+            </button>
+          </td>
+        </ng-container>
+
+        <mat-header-row mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+        <mat-row mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+      </mat-table>
+      <app-scroll-behaviour [disabled]="disableScrollPager" (onScrollToBottom)="onNextPage($event)"></app-scroll-behaviour>
+
+      <div class="col-xl-12 mb-2 text-center" *ngIf="noResult">
+        <mat-label class="no-result">Nenhum Resultado Encontrado</mat-label>
+      </div>
+    </app-card>
+  </div>
+</div>

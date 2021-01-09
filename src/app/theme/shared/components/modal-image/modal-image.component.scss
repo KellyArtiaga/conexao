@@ -1,0 +1,13 @@
+.btn{
+  border: none;
+}
+
+.cdk-overlay-container {
+  position: fixed;
+  z-index: 10000;
+}
+
+.modal-body {
+  width: 80vw;
+  max-width: 500px;
+}

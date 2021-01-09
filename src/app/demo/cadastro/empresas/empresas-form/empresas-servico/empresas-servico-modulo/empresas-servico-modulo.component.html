@@ -1,0 +1,252 @@
+<div class="row">
+  <div class="col-md-9">
+    <form action="" [formGroup]="form">
+      <app-card [options]="false" cardTitle="Precificação" cardClass="code-table" blockClass="pb-0 pt-0">
+        <div class="row mtop">
+          <div class="col-md-4 ">
+            <mat-form-field  class="w-100" appearance="outline">
+              <mat-label>Módulo</mat-label>
+              <mat-select [compareWith]="compareFn" formControlName="modulo" required>
+                <mat-option [value]="item.value" *ngFor="let item of tipoModulos">
+                  {{item.label.modulo}}
+                </mat-option>
+              </mat-select>
+              <mat-error class="mat-error" *ngIf="form.get('modulo').hasError('required')">O módulo é obrigatório!</mat-error>
+            </mat-form-field>
+          </div>
+          <div class="col-md-4 ">
+            <mat-form-field  class="w-100" appearance="outline">
+                <mat-label>Tipo de Contrato</mat-label>
+                <mat-select formControlName="tipoContrato" required>
+                  <mat-option [value]="item.value" *ngFor="let item of tipoContrato">
+                    {{item.label}}
+                  </mat-option>
+                </mat-select>
+                <mat-error class="mat-error" *ngIf="form.get('tipoContrato').hasError('required')">O tipo de contrato é obrigatório!</mat-error>
+            </mat-form-field>
+          </div>
+          <div class="col-md-4 ">
+            <mat-form-field  class="w-100" appearance="outline">
+                <mat-label>Tipo de Remuneração</mat-label>
+                <mat-select  formControlName="tipoRemuneracao" (selectionChange)=getTipo($event) required>
+                  <mat-option [value]="item.value" *ngFor="let item of tipoPrecificacao">
+                    {{item.label}}
+                  </mat-option>
+                </mat-select>
+                <mat-error class="mat-error" *ngIf="form.get('tipoRemuneracao').hasError('required')">O tipo de remuneração é obrigatório!</mat-error>
+            </mat-form-field>
+          </div>
+        </div>
+      </app-card>
+      <div *ngIf='true'>
+        <div class="row" *ngIf="hasServico">
+          <div class="header deep-purple p-24 col-md-12" fxLayout="column" fxLayoutAlign="center center" fxLayout.gt-xs="row"
+            fxLayoutAlign.gt-xs="space-between center">
+            <a id="btn-add" class="btn-add mt-16 mt-sm-0 align-right action-btn" (click)="openBigModal($event, '', -1)">
+              <span class="m-2"><i class="icon-add feather icon-plus"></i> Adicionar Novo</span>
+            </a>
+          </div>
+        </div>
+
+        <!-- Faixas de Pedidos -->
+        <app-card [options]="false" cardTitle="Lista de Precificações" class="code-table" blockClass="pb-0 pt-0" *ngIf="hasServico">
+          <div class="tb">
+            <table class="table table-borderless" >
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <!-- <th>Tipo de Precificação</th> -->
+                  <th>Valor</th>
+                  <th>Lojas (Quantidade)</th>
+                  <th>Ações</th>
+                </tr>
+              </thead>
+              <tbody >
+                <tr  *ngFor="let item of dadosPrecificacoes; let index = index">
+                  <td>
+                    {{item.id ? item.id : ''}}
+                  </td>
+                  <td>
+                    {{(item.valorColeta? item.valorColeta : 'R$0,00') | price:2 }}
+                  </td>
+                  <td>
+                    {{item.empresas ? item.empresas.length : 0 }}
+                  </td>
+                  <td class="action-btn">
+                    <button class="mr-2" id="btn-editar" (click)="openBigModal($event, item, index)" >
+                      <i class="icon-edit feather icon-edit"></i>
+                    </button>
+                    <button class="mr-2" id="btn-excluir" (click)="remove($event, index, item)">
+                      <i class="icon-remove feather icon-trash"></i>
+                    </button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+           <div class="noitems align-center text-center pb-1"  *ngIf="noFaixa">
+              Nenhuma faixa de pedido inserida
+            </div>
+          </div>
+        </app-card>
+      </div>
+    </form>
+  </div>
+
+  <!-- resumo -->
+  <div class="col-md-3 " >
+    <div class="col-md-12 info-fixed" >
+      <app-info-card title="Resumo de Cobrança" class="code-table  hidden-xs" blockClass="pb-0 pt-0">
+        <div class="resumo-info">
+          <div>
+            <span>Módulo: </span><br>
+            <span>{{form.value.modulo.modulo}}</span>
+          </div><br>
+          <div>
+            <span>Contrato: </span><br>
+            <span>{{form.value.tipoContrato}}</span>
+          </div><br>
+          <div>
+            <span>Remuneração: </span><br>
+            <span>{{form.value.tipoRemuneracao}}</span>
+          </div><hr>
+          <div>Salve o serviço para fazer a precificação.</div>
+
+        </div>
+      </app-info-card>
+      <div class="resumo-row ">
+        <button class="col-md-6 btn btn-secondary align-right" [routerLink]="['/cadastro/empresas/editar/' + empresaId]">Cancelar</button>
+        <button [disabled]="!form.valid" class="col-md-6 btn btn-primary align-right" (click)="save(form)" *ngIf="auth.canWrite('empresas/editar/:empresaId/modulos/novo')">Salvar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- bigmodal -->
+<div *ngIf="bigmodal" class="big-modal"  [formGroup]="formPrecificacao">
+  <div class="row m-0 p-0 ">
+    <app-card [options]="false" cardTitle="Matriz/Empresas" class="code-table col-md-9 m-0 p-0" blockClass="pb-0 pt-0">
+      <div class="filter-row">
+          <!-- <mat-form-field class="col-md-6 p-0 m-0" >
+            <mat-label>Pesquisar...</mat-label>
+            <input matInput placeholder="Pesquisar..." />
+          </mat-form-field> -->
+          <mat-checkbox [checked]="isAllSelected" (change)="selectAll($event)" labelPosition="before">Selecionar Tudo</mat-checkbox>
+      </div>
+      <div class="tb">
+       <table class="table table-borderless">
+          <thead>
+            <tr>
+              <th></th>
+              <th>Razão Social</th>
+              <th>CNPJ</th>
+              <th>Telefone</th>
+              <th>Operador<br>Responsável</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody >
+            <tr *ngFor="let loja of lojas; let lojaI = index">
+              <td>
+                <mat-checkbox (change)="switchLoja(lojaI, $event)" [checked]="isLojaSelected(loja.id)"></mat-checkbox>
+              </td>
+              <td>
+                {{loja.razaoSocial}}
+              </td>
+              <td>
+                {{loja.cnpj}}
+              </td>
+              <td>
+                {{loja.telefoneContato}}
+              </td>
+              <td>
+                {{loja.userUpdate}}
+              </td>
+              <td>
+                {{loja.active ? "Ativo" : "Bloqueado"}}
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="noitems align-center text-center" *ngIf="false">
+          Nenhuma faixa de pedido inserida
+        </div>
+      </div>
+
+      <div class="resumo-row col-md-6" style="float: right">
+        <button class="col-md-6 btn btn-secondary align-right" (click)="closeBigModal(false)">Cancelar</button>
+        <button class="col-md-6 btn btn-primary align-right" (click)="saveModal($event)">Salvar</button>
+      </div>
+    </app-card>
+
+    <app-card [options]="false" cardTitle="Parâmetros" class="code-table col-md-3" blockClass="pb-0 ">
+      <div class="col-md-12  m-0 p-0">
+
+        <div class="parametro-row row p-0 m-0">
+          <!-- <mat-checkbox formControlName="cobrarColeta" [checked]="cobrarColeta != null" labelPosition="after">Coleta</mat-checkbox> -->
+          <mat-checkbox formControlName="cobrarColeta" labelPosition="after">Coleta</mat-checkbox>
+          <mat-form-field class="w-100" appearance="outline" *ngIf="formPrecificacao.value.cobrarColeta">
+            <input formControlName="valorColeta" [value]="(formPrecificacao.value.cobrarColeta ? formPrecificacao.value.valorColeta : '') | price" maxlength="10" (input)="changeLojaFieldValue( '', $event.target.value)" type="text" (keypress)="numberOnly($event)" matInput  placeholder="valor" >
+          </mat-form-field>
+        </div>
+
+        <div class="parametro-row row p-0 m-0">
+          <mat-checkbox formControlName="cobrarPrimeiraEntrega" labelPosition="after">Primeira Entrega</mat-checkbox>
+        </div>
+        <div class="parametro-row row p-0 m-0" *ngIf="formPrecificacao.value.cobrarPrimeiraEntrega">
+          <mat-form-field class="col-6 pl-0 pr-1"  appearance="outline">
+            <mat-label>Tipo</mat-label>
+            <mat-select  formControlName="tipoCobrancaPrimeiraEntrega" (selectionChange)="changePrecificacaoFieldValue('', $event.value)" [value]="getPrecificacaoValue('tipoPrimeiraEntrega')" (change)="changePrecificacaoField('tipoPrimeiraEntrega', $event.target.value)">
+              <mat-option [value]="formPrecificacao.value.cobrarPrimeiraEntrega ? item.value : ''" *ngFor="let item of tipoPrimeiraEntrega">
+                {{item.value}}
+              </mat-option>
+            </mat-select>
+            <mat-error class="mat-error" *ngIf="form.get('tipoRemuneracao').hasError('required')">O tipo de remuneração é obrigatório!</mat-error>
+          </mat-form-field>
+
+          <mat-form-field class="col-6 pr-0 pl-1" appearance="outline">
+            <input formControlName="valorPrimeiraEntrega" [value]="(formPrecificacao.value.cobrarPrimeiraEntrega ? formPrecificacao.value.valorPrimeiraEntrega : '')  | price" maxlength="10" placeholder="valor" (input)="changeLojaFieldValue('', $event.target.value)"  type="text" (keypress)="numberOnly($event)" matInput placeholder="valor" >
+          </mat-form-field>
+        </div>
+
+        <div class="parametro-row row p-0 m-0">
+          <mat-checkbox formControlName="cobrarEntregasSeguintes" labelPosition="after">Entregas Seguintes</mat-checkbox>
+          <mat-form-field class="w-100" appearance="outline" *ngIf="formPrecificacao.value.cobrarEntregasSeguintes">
+            <input formControlName="valorEntregasSeguintes" [value]="(formPrecificacao.value.cobrarEntregasSeguintes ? formPrecificacao.value.valorEntregasSeguintes : '') | price" maxlength="10" placeholder="valor" (input)="changeLojaFieldValue('', $event.target.value)"  type="text" (keypress)="numberOnly($event)" matInput placeholder="valor" >
+          </mat-form-field>
+        </div>
+
+        <div class="parametro-row row p-0 m-0">
+          <mat-checkbox formControlName="cobrarRetorno" labelPosition="after">Cobrar Retorno</mat-checkbox>
+          <mat-form-field class="w-100" appearance="outline" *ngIf="formPrecificacao.value.cobrarRetorno">
+            <input formControlName="valorRetorno" [value]="(formPrecificacao.value.cobrarRetorno ? formPrecificacao.value.valorRetorno : '') | price" maxlength="10"  placeholder="valor" (input)="changeLojaFieldValue('', $event.target.value)"  type="text" (keypress)="numberOnly($event)" matInput placeholder="valor" >
+          </mat-form-field>
+        </div>
+
+        <div class="parametro-row row p-0 m-0">
+          <mat-checkbox formControlName="cobrarHora" labelPosition="after">Cobrar Hora</mat-checkbox>
+        </div>
+        <div class="parametro-row row p-0 m-0" *ngIf="formPrecificacao.value.cobrarHora">
+          <mat-form-field class="col-6 pl-0 pr-1" appearance="outline">
+            <mat-label>Tipo</mat-label>
+            <mat-select  formControlName="tipoCobrancaEntregaHora" (selectionChange)="changePrecificacaoFieldValue('tipoHora', $event.value)" [value]="getPrecificacaoValue('tipoHora')" (change)="changePrecificacaoField('tipoHora', $event.target.value)">
+              <mat-option [value]="formPrecificacao.value.cobrarHora ? item.value : ''" *ngFor="let item of tipoHora">
+                {{item.value}}
+              </mat-option>
+            </mat-select>
+            <mat-error class="mat-error" *ngIf="form.get('tipoRemuneracao').hasError('required')">O tipo de remuneração é obrigatório!</mat-error>
+          </mat-form-field>
+          <mat-form-field class="col-6 pr-0 pl-1"appearance="outline">
+            <input formControlName="valorHora"  [value]="(formPrecificacao.value.cobrarHora ? formPrecificacao.value.valorHora : '') | price" maxlength="10" placeholder="valor" (input)="changeLojaFieldValue('', $event.target.value)"  type="text" (keypress)="numberOnly($event)" matInput placeholder="valor" >
+          </mat-form-field>
+        </div>
+
+        <div class="parametro-row row p-0 m-0">
+          <mat-label>Quantidade mínima</mat-label>
+          <mat-form-field class="w-100" appearance="outline">
+            <input formControlName="qtdMinimaExpedicao"  placeholder="Quantidade" (input)="changeLojaFieldValue('', $event.target.value)"  type="text" (keypress)="numberOnly($event)" matInput >
+          </mat-form-field>
+        </div>
+      </div>
+    </app-card>
+  </div>
+</div>

@@ -1,0 +1,92 @@
+<div class="row">
+  <app-filter placeholder="Busque por nome, CPF, email ou matrícula" (onChange)="changeFilter($event)"></app-filter>
+</div>
+
+<div class="row">
+  <div class="header deep-purple p-24 col-md-12" fxLayout="column" fxLayoutAlign="center center" fxLayout.gt-xs="row"
+    fxLayoutAlign.gt-xs="space-between center">
+    <a id="btn-add" *ngIf="auth.canWrite('entregadores')" class="btn-add mt-16 mt-sm-0 align-right" [routerLink]="['/cadastro/entregadores/novo']">
+      <span class="m-2"><i class="icon-add feather icon-plus"></i> Novo Entregador</span>
+    </a>
+    <a id="btn-export" class="btn-export mt-16 mt-sm-0 align-right" (click)="exportData()">
+      <span class="m-2"><i class="icon-export feather icon-printer"></i> Export</span>
+    </a>
+    <!-- <a id="btn-export" class="btn-export mt-16 mt-sm-0 align-right" [routerLink]="['/cadastro/usuarios']">
+          <span class="m-2"><i class="icon-export feather icon-printer"></i> Export</span>
+      </a> -->
+  </div>
+</div>
+<div class="row">
+  <div class="col-xl-12">
+
+    <app-card cardTitle="Listagem" cardClass="code-table" blockClass="pb-0 pt-0">
+      <mat-table matTableExporter #exporter="matTableExporter" [dataSource]="dataSource" class="table-hover main-table" [hidden]="noResult">
+
+        <!-- Data Column -->
+       <ng-container matColumnDef="matricula">
+          <mat-header-cell *matHeaderCellDef> Matrícula </mat-header-cell>
+          <mat-cell *matCellDef="let row"> {{row.matricula}} </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="nome">
+          <mat-header-cell *matHeaderCellDef> Nome </mat-header-cell>
+          <mat-cell *matCellDef="let row"> {{row.nome}} </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="cpf">
+          <mat-header-cell *matHeaderCellDef> CPF </mat-header-cell>
+          <mat-cell *matCellDef="let row"> {{row.cpf}} </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="categoriaCNH">
+          <mat-header-cell *matHeaderCellDef> CNH/Categoria </mat-header-cell>
+          <mat-cell *matCellDef="let row"> {{row.categoriaCNH}} </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="modeloVeiculo">
+          <mat-header-cell *matHeaderCellDef> Modelo </mat-header-cell>
+          <mat-cell *matCellDef="let row"> {{row.modeloVeiculo}} </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="placaVeiculo">
+          <mat-header-cell *matHeaderCellDef> Placa </mat-header-cell>
+          <mat-cell *matCellDef="let row"> {{row.placaVeiculo}} </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="celular">
+          <mat-header-cell *matHeaderCellDef> Telefone Celular </mat-header-cell>
+          <mat-cell *matCellDef="let row"> {{row.celular}} </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="active">
+          <mat-header-cell *matHeaderCellDef> Status </mat-header-cell>
+          <mat-cell *matCellDef="let row"> {{ row.active? 'Ativo':'Inativo' }} </mat-cell>
+        </ng-container>
+
+        <!-- Action Column -->
+        <ng-container matColumnDef="buttons">
+          <th class="alinhamento" mat-header-cell *matHeaderCellDef id="titColumn-empresa-acoes" scope="col">
+            Ações
+          </th>
+          <td class="action-btn" mat-cell *matCellDef="let row">
+            <button class="mr-2" id="btn-editar" (click)="edit(row)" *ngIf="auth.canWrite('entregadores')">
+              <i class="icon-edit feather icon-edit"></i>
+            </button>
+            <button class="mr-2" id="btn-excluir" (click)="confirm(row)" *ngIf="auth.canDelete('entregadores')">
+              <i class="icon-remove feather icon-trash"></i>
+            </button>
+          </td>
+        </ng-container>
+
+        <mat-header-row mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+        <mat-row mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+      </mat-table>
+      <app-scroll-behaviour [disabled]="disableScrollPager" (onScrollToBottom)="onNextPage($event)"></app-scroll-behaviour>
+
+      <div class="col-xl-12 mb-2 text-center" *ngIf="noResult">
+        <mat-label class="no-result">Nenhum Resultado Encontrado</mat-label>
+      </div>
+    </app-card>
+  </div>
+</div>
+<app-scroll-behaviour></app-scroll-behaviour>

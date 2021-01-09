@@ -1,0 +1,17 @@
+<div class="side-nav-container">
+  <nav class="side-card" style="min-width: 230px;">
+    <div class="side-img" (click)="change('img')" >
+
+      <mat-icon class="user-icon" *ngIf="!image || image === ''">person_outline</mat-icon>
+      <img [src]="image" *ngIf="image && image !== ''">
+    </div>
+    <a class="card-item" [class.selected]="selected === index" (click)="change(index)"  *ngFor="let item of items; let index = index">
+      {{item}}
+
+      <mat-icon class="tab-icon" *ngIf="!hasError(item)">check_circle</mat-icon>
+    </a>
+  </nav>
+  <div class="subPageContainer">
+    <ng-content></ng-content>
+  </div>
+</div>

@@ -1,0 +1,164 @@
+<form name="form" [formGroup]="form" novalidate>
+
+  <!-- FORM -->
+  <div class="row p-0 m-0 align-items-center">
+    <div class="card pb-0  ">
+      <div class="card-header w-100"
+          aria-controls="collapseFilter">
+          <h5><span *ngIf="form.value.id && form.value.id !== ''">Editar - </span><span *ngIf="!form.value.id || form.value.id === ''">Cadastrar - </span> Dados Bancarios</h5>
+      </div>
+      <div class="card-body w-100" id="collapseFilter" >
+        
+
+        <div class=" col-md-3 m-0">
+          <mat-form-field class="w-100" appearance="outline">
+              <mat-label>Banco</mat-label>
+              <mat-select required name="tipo" formControlName="banco" [compareWith]="compareNome">
+   
+                  <mat-option [value]="b" *ngFor="let b of listaBancos">
+                    {{b.nome}}
+                  </mat-option>
+
+              </mat-select>
+              <mat-error class="mat-error" *ngIf="form.get('tipo').hasError('required')">
+                Campo obrigatório!
+            </mat-error>
+          </mat-form-field>
+        </div>
+        <div class="col-md-3 m-0">
+          <mat-form-field class="w-100" appearance="outline">
+              <mat-label>Agência</mat-label>
+              <input matInput type="text" placeholder="Agência" name="agencia"
+                  formControlName='agencia' required>
+              <mat-error class="mat-error" *ngIf="form.get('agencia').hasError('required')">
+                Campo obrigatório!
+              </mat-error>
+              <mat-error class="mat-error" *ngIf="!form.get('agencia').hasError('required')">
+                    Campo inválido!</mat-error>
+          </mat-form-field>
+        </div>
+        <div class="col-md-3 m-0">
+          <mat-form-field class="w-100" appearance="outline">
+              <mat-label>Conta</mat-label>
+              <input matInput type="text" placeholder="Conta" name="conta"
+                  formControlName='conta' required>
+              <mat-error class="mat-error" *ngIf="form.get('conta').hasError('required')">
+                    Campo obrigatório!
+              </mat-error>
+              <mat-error class="mat-error" *ngIf="!form.get('conta').hasError('required')">
+                    Campo inválido!</mat-error>
+          </mat-form-field>
+        </div>
+        <div class=" col-md-3 m-0">
+          <mat-form-field class="w-100" appearance="outline">
+              <mat-label>Tipo</mat-label>
+              <mat-select required name="tipo" formControlName="tipo">
+   
+                  <mat-option [value]="t" *ngFor="let t of tiposContas">
+                    {{t}}
+                  </mat-option>
+
+              </mat-select>
+              <mat-error class="mat-error" *ngIf="form.get('tipo').hasError('required')">
+                Campo obrigatório!
+            </mat-error>
+          </mat-form-field>
+        </div>
+
+        <div class="col-md-12">
+          <button *ngIf="auth.canWrite('operadores') && (!form.value.id || form.value.id === '')" type="submit" class="btn btn-primary align-right"
+              (click)="onAdd(form)">Adicionar</button>
+          
+              
+          <button *ngIf="auth.canWrite('operadores') && (form.value.id && form.value.id !== '')" type="submit" class="btn btn-primary align-right"
+              (click)="onAdd(form)">Salvar</button>
+              <button *ngIf="auth.canWrite('operadores') && (form.value.id && form.value.id !== '')" type="submit" class="btn btn-danger align-right"
+              (click)="onCancelEditing()">Cancelar</button>
+          <br>
+        </div>
+       
+      </div>
+    </div>
+  </div>
+  <!-- /FORM -->
+
+  <!-- TABELA -->
+  <div class="row p-0 m-0 align-items-center">
+    <div class="card pb-0 ">
+      <!-- 
+    <app-card cardTitle="Lista de Bancos" cardClass="code-table" blockClass="pb-0 pt-0 col-md-12"> -->
+        <div class="card-header w-100"
+            aria-controls="collapseFilter">
+            <h5>Dados Bancarios</h5>
+        </div>
+        <div class="card-body w-100" id="collapseFilter" >
+          <mat-table matTableExporter #exporter="matTableExporter" [dataSource]="dataSource" class="table-hover main-table w-100" [hidden]="noResult">
+
+            <!-- Data Column -->
+            <ng-container  ng-container matColumnDef="active">
+              <mat-header-cell *matHeaderCellDef> Ativa </mat-header-cell>
+              <mat-cell *matCellDef="let row"> <mat-checkbox (change)="switchRowStatus(row, $event)" [checked]="row.active" name='active' type="checkbox" ></mat-checkbox> </mat-cell>
+            </ng-container>
+            <ng-container  ng-container matColumnDef="banco">
+              <mat-header-cell *matHeaderCellDef> Banco </mat-header-cell>
+              <mat-cell *matCellDef="let row"> {{row.banco}} </mat-cell>
+            </ng-container>
+            <ng-container  ng-container matColumnDef="agencia">
+              <mat-header-cell *matHeaderCellDef> Agência </mat-header-cell>
+              <mat-cell *matCellDef="let row"> {{row.agencia}} </mat-cell>
+            </ng-container>
+            <ng-container  ng-container matColumnDef="conta">
+              <mat-header-cell *matHeaderCellDef> Conta </mat-header-cell>
+              <mat-cell *matCellDef="let row"> {{row.conta}} </mat-cell>
+            </ng-container>
+            <ng-container  ng-container matColumnDef="tipo">
+              <mat-header-cell *matHeaderCellDef> Tipo </mat-header-cell>
+              <mat-cell *matCellDef="let row"> {{row.tipo}} </mat-cell>
+            </ng-container>
+            
+            <!-- Action Column -->
+            <ng-container matColumnDef="buttons">
+              <th class="alinhamento" mat-header-cell *matHeaderCellDef id="titColumn-empresa-acoes" scope="col">
+                Ações
+              </th>
+              <td class="action-btn" mat-cell *matCellDef="let row">
+                <button class="mr-2" id="btn-editar" (click)="edit(row)" *ngIf="auth.canWrite('entregadores')">
+                  <i class="icon-edit feather icon-edit"></i>
+                </button>
+                <button class="mr-2" id="btn-excluir" (click)="delete(row)" *ngIf="auth.canDelete('entregadores')">
+                  <i class="icon-remove feather icon-trash"></i>
+                </button>
+              </td>
+            </ng-container>
+    
+            <!-- Action Column -->
+            <!-- <ng-container matColumnDef="buttons">
+              <th class="alinhamento" mat-header-cell *matHeaderCellDef id="titColumn-empresa-acoes" scope="col">
+                Ações
+              </th>
+              <td class="action-btn" mat-cell *matCellDef="let row">
+                <button class="mr-2" id="btn-editar" *ngIf="auth.canWrite('entregadores')">
+                  <i class="icon-edit feather icon-edit"></i>
+                </button>
+                <button class="mr-2" id="btn-excluir" (click)="confirmDelete(row)">
+                  <i class="icon-remove feather icon-trash"></i>
+                </button>
+              </td>
+            </ng-container> -->
+    
+            <mat-header-row mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+            <mat-row mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+          </mat-table>
+          <div class="col-xl-12 mb-2 text-center" *ngIf="noResult">
+            <mat-label class="no-result">Nenhum Resultado Encontrado</mat-label>
+          </div>
+          </div>
+      </div>
+  </div>
+  <!-- /TABELA -->
+
+    
+  <button *ngIf="auth.canWrite('entregadores')" class="btn btn-primary align-right"
+      (click)="onSubmit(form)" [disabled]="modifiedRows.length === 0">Salvar Alterações</button>
+  <br>
+</form>

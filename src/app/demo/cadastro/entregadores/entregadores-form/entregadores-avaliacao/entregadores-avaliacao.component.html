@@ -1,0 +1,47 @@
+<form name="form" [formGroup]="form" novalidate class="mt-4">
+  <div class="row p-0 m-0 align-items-center">
+    <div class="card pb-0 mt-30  w-100 ">
+      <div class="card-header"
+          aria-controls="collapseFilter">
+          <h5>Escrever avalição</h5>
+      </div>
+      <div class="card-body w-100" aria-controls="collapseFilter">
+        <div class="row">
+          <div class="form-group col-md-9">
+            <label class="form-label">Caso queira, adicione um comentário para sua avaliação:</label>
+            <textarea matinput class="form-control" name="descricao" formControlName='descricao'></textarea>
+          </div>
+
+          <div class="col-md-3">
+            <div class="voting-area">
+             <mat-icon class="tab-icon" [class.active]="form.value.avaliation === 5" (click)="changeAvaliation(5)">star</mat-icon>
+             <mat-icon class="tab-icon" [class.active]="form.value.avaliation === 4" (click)="changeAvaliation(4)">star</mat-icon>
+             <mat-icon class="tab-icon" [class.active]="form.value.avaliation === 3" (click)="changeAvaliation(3)">star</mat-icon>
+             <mat-icon class="tab-icon" [class.active]="form.value.avaliation === 2" (click)="changeAvaliation(2)">star</mat-icon>
+             <mat-icon class="tab-icon" [class.active]="form.value.avaliation === 1" (click)="changeAvaliation(1)">star</mat-icon>
+            </div>
+          </div>
+       
+          <div class="form-group col-md-12 float-right pb-0 mb-0">
+            <button type="submit" class="btn btn-primary align-right"
+            (click)="onSubmit($event, form)">Salvar</button>
+          </div>
+        </div>
+       
+      </div>
+    </div>
+
+    <div class="card pb-0 mt-30  w-100 ">
+      <div class="card-header"
+          aria-controls="collapseFilter">
+          <h5>Avaliações</h5>
+      </div>
+      <div class="card-body w-100" aria-controls="collapseFilter">
+        <div class="row">
+          <div></div>
+        </div>
+     
+      </div>
+    </div>
+  </div>
+</form>

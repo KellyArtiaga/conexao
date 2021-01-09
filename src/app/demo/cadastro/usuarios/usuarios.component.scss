@@ -1,0 +1,19 @@
+table{
+margin: 0!important;
+}
+
+
+.scrollIndicator {
+  width: 100%;
+  height: 100px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  & > .t {
+    height: 20px;
+    width: 100%;
+    margin: 20px;
+    background-color: red;
+  }
+  background-color: rebeccapurple;
+}

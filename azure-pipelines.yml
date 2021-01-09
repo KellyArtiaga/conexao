@@ -1,0 +1,24 @@
+trigger:
+- master
+- develop
+
+pool:
+  demands: maven
+  vmImage: 'ubuntu-latest'
+
+variables:
+  AWS_ACCESS_KEY_ID: AKIASFZVDQQZDXV66JVJ
+  AWS_SECRET_ACCESS_KEY: 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
+  npm_config_cache: $(Pipeline.Workspace)/source/.npm
+
+resources:
+  repositories:
+  - repository: templates
+    type: git
+    name: azure-pipelines-templates
+  - repository: terraform
+    name: terraform-aws-cloudfront-module
+    type: git
+
+steps:
+  - template: cloudfront.yml@templates

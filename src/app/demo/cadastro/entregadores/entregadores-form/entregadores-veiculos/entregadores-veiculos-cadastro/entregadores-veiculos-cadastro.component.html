@@ -1,0 +1,175 @@
+<form name="form" [formGroup]="form" novalidate>
+  <div class="row p-0 m-0 align-items-center">
+    <div class="card pb-0">
+      <div class="card-header w-100"
+          aria-controls="collapseFilter">
+          <h5>Veículo</h5>
+      </div>
+      <div class="card-body w-100" id="collapseFilter" >
+        <div class="col-md-3 m-0">
+          <mat-form-field class="w-100" appearance="outline">
+              <mat-label>Marca</mat-label>
+              <input matInput type="text" name="codigo"
+                  formControlName='marca' required>
+                  <mat-error class="mat-error" *ngIf="form.get('marca').hasError('required')">
+                    Campo obrigatório!
+                </mat-error>
+          </mat-form-field>
+        </div>
+        <div class="col-md-3 m-0">
+          <mat-form-field class="w-100" appearance="outline">
+            <mat-label>Modelo</mat-label>
+            <input matInput type="text" name="codigo"
+                formControlName='modelo' required>
+                <mat-error class="mat-error" *ngIf="form.get('modelo').hasError('required')">
+                  Campo obrigatório!
+              </mat-error>
+          </mat-form-field>
+        </div>
+        <div class="col-md-3 m-0">
+          <mat-form-field class="w-100" appearance="outline">
+          <mat-label>Cor</mat-label>
+          <input matInput type="text" name="codigo"
+              formControlName='cor' required>
+              <mat-error class="mat-error" *ngIf="form.get('cor').hasError('required')">
+                Campo obrigatório!
+            </mat-error>
+          </mat-form-field>
+        </div>
+        <div class="col-md-3 m-0">
+          <mat-form-field class="w-100" appearance="outline">
+          <mat-label>Ano</mat-label>
+          <input matInput type="number" [min]="getDateRange()[0]" [max]="getDateRange()[1]" name="codigo"
+              formControlName='ano' required>
+              <mat-error class="mat-error" *ngIf="form.get('ano').hasError('required')">
+                Campo obrigatório!
+            </mat-error>
+            <mat-error class="mat-error" *ngIf="form.get('ano').hasError('min')">Campo inválido! Insira um numero maior que {{getDateRange()[0]}}</mat-error>
+            <mat-error class="mat-error" *ngIf="form.get('ano').hasError('max')">Campo inválido! Insira um numero menor que {{getDateRange()[1]}}</mat-error>
+
+        </mat-form-field>
+        </div>
+        <div class="col-md-3 m-0" *ngIf="hasField('placa')">
+          <mat-form-field class="w-100" appearance="outline">
+          <mat-label>Placa</mat-label>
+          <input matInput maxlength="7" type="text" name="codigo"
+              formControlName='placa' [value]="form.value.placa | uppercase" required>
+            <mat-error class="mat-error" *ngIf="form.get('placa').hasError('required')">
+                Campo obrigatório!
+            </mat-error>
+            <mat-error class="mat-error" *ngIf="!form.get('placa').hasError('required')">
+              Campo inválido!
+            </mat-error>
+        </mat-form-field>
+        </div>
+
+        <div class="col-md-3 m-0" *ngIf="hasField('chassi')">
+          <mat-form-field class="w-100" appearance="outline">
+          <mat-label>Chassi</mat-label>
+          <input maxlength="17" matInput type="text" name="codigo"
+              formControlName='chassi' required>
+              <mat-error class="mat-error" *ngIf="form.get('chassi').hasError('required')">
+                Campo obrigatório!
+            </mat-error>
+            <mat-error class="mat-error" *ngIf="!form.get('chassi').hasError('required')">
+              Campo Inválido!
+          </mat-error>
+          </mat-form-field>
+        </div>
+
+        <div class="col-md-3 m-0" *ngIf="hasField('renavam')">
+          <mat-form-field class="w-100" appearance="outline">
+          <mat-label>Renavam</mat-label>
+          <input maxlength="11" matInput type="text" name="codigo"
+              formControlName='renavam' required>
+              <mat-error class="mat-error" *ngIf="form.get('renavam').hasError('required')">
+                Campo obrigatório!
+            </mat-error>
+            <mat-error class="mat-error" *ngIf="!form.get('renavam').hasError('required')">
+              Campo Inválido!
+          </mat-error>
+          </mat-form-field>
+        </div>
+
+        <div class="col-md-3 m-0">
+          <mat-form-field class="w-100" appearance="outline">
+            <mat-label>Compartimento</mat-label>
+            <mat-select required  formControlName="compartimento" [compareWith]="compareLabel" >
+                
+                <mat-option *ngFor="let tipo of compartimentos" [value]="tipo" >
+                    {{tipo}}
+                </mat-option>
+            </mat-select>
+            <mat-error class="mat-error" *ngIf="form.get('tipo').hasError('required')">
+              Campo obrigatório!
+          </mat-error>
+        </mat-form-field>
+        </div>
+
+        <div class="col-md-3 m-0">
+          <mat-form-field class="w-100" appearance="outline">
+            <mat-label>Tipo De Capacidade</mat-label>
+            <mat-select required name="tenant" formControlName="tipoCapacidade" [compareWith]="compareLabel" >
+         
+                <mat-option *ngFor="let tipo of tiposCapacidade" [value]="tipo" >
+                    {{tipo}}
+                </mat-option>
+            </mat-select>
+            <mat-error class="mat-error" *ngIf="form.get('tipo').hasError('required')">
+              Campo obrigatório!
+          </mat-error>
+        </mat-form-field>
+        </div>
+
+        <div class="col-md-3 m-0">
+          <mat-form-field class="w-100" appearance="outline">
+          <mat-label>Capacidade</mat-label>
+          <input matInput type="number"
+              formControlName='capacidade' required>
+              <mat-error class="mat-error" *ngIf="form.get('capacidade').hasError('required')">
+                Campo obrigatório!
+            </mat-error>
+            <mat-error class="mat-error" *ngIf="!form.get('capacidade').hasError('required')">
+              Campo Inválido!
+          </mat-error>
+          </mat-form-field>
+        </div>
+
+        <!-- <div class="col-md-3 m-0">
+          <mat-form-field class="w-100" appearance="outline">
+            <mat-label>Tipo</mat-label>
+            <mat-select required name="tenant" formControlName="tipo" [compareWith]="compareLabel" >
+                
+         
+                <mat-option *ngFor="let tipo of tipos" [value]="tipo" >
+                    {{tipo}}
+                </mat-option>
+            </mat-select>
+            <mat-error class="mat-error" *ngIf="form.get('tipo').hasError('required')">
+              Campo obrigatório!
+          </mat-error>
+        </mat-form-field>
+        </div> -->
+
+        <div class="col-3 m-0">
+          <div class="form-check">
+            <mat-checkbox formControlName='active' name='active' type="checkbox"
+              id="activeMaster">Ativar
+            </mat-checkbox>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+  <button *ngIf="auth.canWrite('entregadores/editar/:id/veiculos/novo')" type="submit" class="btn btn-primary align-right"
+      (click)="onSubmit(form)">Salvar Veículo</button>
+  <!-- <button type="button" *ngIf="form.get('id').value && auth.canDelete('entregadores/editar/:id/veiculos/novo')" class="btn btn-danger align-right"
+      (click)="confirm(form)">Excluir Veículo</button> -->
+  <br>
+</form>
+
+<div class="header deep-purple p-24 col-md-12" fxLayout="column" fxLayoutAlign="center center" fxLayout.gt-xs="row"
+fxLayoutAlign.gt-xs="space-between center">
+
+</div>

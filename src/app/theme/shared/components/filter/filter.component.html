@@ -1,0 +1,19 @@
+<div class="col-xl-12">
+  <div class="card pb-0 w-100">
+    <div class="card-header w-100" (click)="collapse()">
+      <h5 class="filter-header-items" >
+        Filtro
+      
+        <span class="align-right" *ngIf="!open"><i class="feather icon-plus"></i></span>
+        <span class="align-right" *ngIf="open"><i class="feather icon-minus"></i></span>
+      </h5>
+    </div>
+    <div class="card-body w-100" id="collapseFilter" *ngIf="open">
+      <mat-form-field class="w-100" >
+        <mat-label>{{placeholder}}</mat-label>
+        <input autocomplete="off" [(ngModel)]="value" (input)="onInput($event)" matInput type="text" >
+        <mat-icon matSuffix>search</mat-icon>
+      </mat-form-field>          
+    </div>
+  </div>    
+</div>

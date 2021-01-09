@@ -1,0 +1,70 @@
+<div id="forms" class="page-layout simple fullwidth" fxLayout="column">
+    <div class="row">
+        <app-filter (onChange)="filterData($event)"></app-filter>
+    </div>
+
+    <div class="row">
+        <div class="header deep-purple p-24 col-md-12" fxLayout="column" fxLayoutAlign="center center"
+            fxLayout.gt-xs="row" fxLayoutAlign.gt-xs="space-between center">
+            <a *ngIf="auth.canWrite('usuarios')" id="btn-add" class="btn-add mt-16 mt-sm-0 align-right" [routerLink]="['/cadastro/usuarios/novo']">
+                <span class="m-2"><i class="icon-add feather icon-plus"></i> Novo Usuário</span>
+            </a>
+            <a id="btn-export" class="btn-export mt-16 mt-sm-0 align-right" (click)="exporter.exportTable('csv')">
+                <span class="m-2"><i class="icon-export feather icon-printer"></i> Exportar </span>
+            </a>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xl-12">
+            <app-card cardTitle="Listagem" cardClass="code-table card-table" blockClass="p-0">
+                <mat-table matTableExporter #exporter="matTableExporter" [dataSource]="dataSource"
+                    class="table-hover main-table" [hidden]="noResult">
+
+                    <!-- Data Column -->
+                    <ng-container matColumnDef="nome">
+                        <mat-header-cell *matHeaderCellDef> Nome </mat-header-cell>
+                        <mat-cell *matCellDef="let row"> {{row.name}} </mat-cell>
+                    </ng-container>
+
+                    <ng-container matColumnDef="login">
+                        <mat-header-cell *matHeaderCellDef> Email </mat-header-cell>
+                        <mat-cell *matCellDef="let row"> {{row.login | lowercase}} </mat-cell>
+                    </ng-container>
+
+                    <ng-container matColumnDef="roles">
+                        <mat-header-cell *matHeaderCellDef> Tipo de perfil </mat-header-cell>
+                        <mat-cell *matCellDef="let row"> {{row.roleName}} </mat-cell>
+                    </ng-container>
+
+                    <ng-container matColumnDef="active">
+                        <mat-header-cell *matHeaderCellDef> Status </mat-header-cell>
+                        <mat-cell *matCellDef="let row"> {{ row.active? 'Ativo':'Inativo' }} </mat-cell>
+                    </ng-container>
+
+                    <!-- Action Column -->
+                    <ng-container matColumnDef="buttons">
+                        <th class="alinhamento" mat-header-cell *matHeaderCellDef id="titColumn-empresa-acoes"
+                            scope="col">
+                            Ações
+                        </th>
+                        <td class="action-btn" mat-cell *matCellDef="let row">
+                            <button class="mr-2" id="btn-editar" (click)="edit(row)" *ngIf="auth.canWrite('usuarios')">
+                                <i class="icon-edit feather icon-edit"></i>
+                            </button>
+                            <button class="mr-2" id="btn-excluir" (click)="confirm(row)" *ngIf="auth.canDelete('usuarios')">
+                                <i class="icon-remove feather icon-trash"></i>
+                            </button>
+                        </td>
+                    </ng-container>
+
+                    <mat-header-row mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+                    <mat-row mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+                </mat-table>
+
+                <div class="col-xl-12 mb-2 text-center" *ngIf="noResult">
+                    <mat-label class="no-result">Nenhum Resultado Encontrado</mat-label>
+                </div>
+            </app-card>
+        </div>
+    </div>
+</div>

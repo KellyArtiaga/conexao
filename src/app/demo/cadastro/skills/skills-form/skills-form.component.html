@@ -1,0 +1,53 @@
+<div class="row">
+  <form name="form" class="col-md-12" [formGroup]="form" novalidate>
+    <div class="row p-0 m-0 align-items-center">
+      <div class="card pb-0 mt-30 ">
+        <div class="card-header w-100"
+            aria-controls="collapseFilter">
+            <h5>Skill</h5>
+        </div>
+        <div class="card-body w-100" id="collapseFilter" >
+          <div class="col-md-6 m-0">
+            <mat-form-field class="w-100" appearance="outline">
+                <mat-label>Nome</mat-label>
+                <input required matInput type="text" name="nome"
+                    formControlName='nome'>
+            </mat-form-field>
+          </div>
+
+          <div class="col-md-6 m-0">
+            <mat-form-field class="w-100" appearance="outline">
+                <mat-label>Descrição</mat-label>
+                <input required matInput type="text" name="descricao"
+                    formControlName='descricao'>
+            </mat-form-field>
+          </div>
+
+
+          <div class="col-3 m-0">
+            <div class="form-check">
+              <mat-checkbox formControlName='active' name='active' type="checkbox"
+                id="activeMaster">Ativar
+              </mat-checkbox>
+            </div>
+        </div>
+        </div>
+      </div>
+
+    </div>
+    <button *ngIf="auth.canWrite('skills')" type="submit" class="btn btn-primary align-right"
+        (click)="onSubmit(form)">Salvar</button>
+    <button type="button" *ngIf="form.get('id').value && auth.canDelete('skills')" class="btn btn-danger align-right"
+        (click)="confirm(form)">Excluir</button>
+    <br>
+  </form>
+</div>
+
+<div class="row mt-3">
+    <div class="header deep-purple p-24 col-md-12" fxLayout="column" fxLayoutAlign="center center" fxLayout.gt-xs="row"
+        fxLayoutAlign.gt-xs="space-between center">
+        <a id="btn-voltar" class="btn btn-primary mt-16 mt-sm-0" [routerLink]="['/cadastro/skills']">
+            <span class="m-2"><i class="feather icon-arrow-left"></i> Voltar</span>
+        </a>
+    </div>
+</div>

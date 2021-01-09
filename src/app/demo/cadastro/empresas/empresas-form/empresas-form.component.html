@@ -1,0 +1,50 @@
+<div class="row">
+  <div class="col-sm-12">
+    <h5>Nova Empresa</h5>
+    <hr>
+    <mat-tab-group>
+      <mat-tab label="Dados da Empresa">
+        <ng-template mat-tab-label>
+          Dados da Empresa
+          <mat-icon class="tab-icon" *ngIf="isEditing()">check_circle</mat-icon>
+        </ng-template>
+        <app-empresas-dados-pessoais></app-empresas-dados-pessoais>
+      </mat-tab>
+      <mat-tab label="Filiais" *ngIf="areOtherTabsAvailable()">
+        <ng-template mat-tab-label>
+          Filiais
+          <mat-icon class="tab-icon" *ngIf="checkFiliais">check_circle</mat-icon>
+        </ng-template>
+        <app-empresas-filiais (check)="feedbackCheck($event, 'filiais')"></app-empresas-filiais>
+      </mat-tab>
+      <mat-tab label="Serviços" *ngIf="areOtherTabsAvailable()">
+        <ng-template mat-tab-label>
+          Serviços
+          <mat-icon class="tab-icon" *ngIf="checkServicos">check_circle</mat-icon>
+        </ng-template>
+        <app-empresas-servico (check)="feedbackCheck($event, 'servicos')"></app-empresas-servico>
+      </mat-tab>
+      <mat-tab label="Contrato" *ngIf="areOtherTabsAvailable()">
+        <ng-template mat-tab-label>
+          Contrato
+          <mat-icon class="tab-icon" *ngIf="checkContrato">check_circle</mat-icon>
+        </ng-template>
+        <app-empresas-contrato (check)="feedbackCheck($event, 'contrato')"></app-empresas-contrato>
+      </mat-tab>
+      <mat-tab label="Status da Empresa">
+        <ng-template mat-tab-label>
+          Status
+        </ng-template>
+        <app-empresas-status></app-empresas-status>
+      </mat-tab>
+    </mat-tab-group>
+  </div>
+</div>
+<div class="row">
+  <div class="header deep-purple p-24 col-md-12" fxLayout="column" fxLayoutAlign="center center" fxLayout.gt-xs="row"
+    fxLayoutAlign.gt-xs="space-between center">
+    <a id="btn-voltar" class="btn btn-primary mt-16 mt-sm-0" [routerLink]="['/cadastro/empresas']">
+      <span class="m-2"><i class="feather icon-arrow-left"></i> Voltar</span>
+    </a>
+  </div>
+</div>

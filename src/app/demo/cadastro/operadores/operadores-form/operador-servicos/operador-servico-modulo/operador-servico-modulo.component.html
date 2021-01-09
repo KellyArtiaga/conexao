@@ -1,0 +1,161 @@
+<div class="row">
+  <div class="col-xl-9">
+    <form action="" [formGroup]="form">
+      <app-card [options]="false" cardTitle="Precificação" cardClass="code-table" blockClass="pb-0 pt-0">
+        <div class="row mtop">
+          <div class="col-md-6 ">
+            <mat-form-field  class="w-100" appearance="outline">
+                <mat-label>Módulo</mat-label>
+                <mat-select formControlName="modulo" required>
+                  <mat-option [value]="item.value" *ngFor="let item of tipoModulos">
+                    {{item.label}}
+                  </mat-option>
+                </mat-select>
+                <mat-error class="mat-error" *ngIf="form.get('modulo').hasError('required')">O módulo é obrigatório!</mat-error>
+            </mat-form-field>
+          </div>
+          <div class="col-md-6 ">
+            <mat-form-field  class="w-100" appearance="outline">
+                <mat-label>Tipo de Remuneração</mat-label>
+                <mat-select  formControlName="tipoRemuneracao" (selectionChange)=getTipo($event) required>
+                  <mat-option [value]="item.value" *ngFor="let item of tipoPrecificacao">
+                    {{item.label}}
+                  </mat-option>
+                </mat-select>
+                <mat-error class="mat-error" *ngIf="form.get('tipoRemuneracao').hasError('required')">O tipo de remuneração é obrigatório!</mat-error>
+            </mat-form-field>
+          </div>
+        </div>
+      </app-card>
+      <div *ngIf='form.valid'>
+        <div class="row" *ngIf="!isFixoMensal">
+          <div class="header deep-purple p-24 col-md-12" fxLayout="column" fxLayoutAlign="center center" fxLayout.gt-xs="row"
+            fxLayoutAlign.gt-xs="space-between center">
+            <a id="btn-add" class="btn-add mt-16 mt-sm-0 align-right action-btn" (click)="novaFaixa($event)">
+              <span class="m-2"><i class="icon-add feather icon-plus"></i> Adicionar nova faixa</span>
+            </a>
+          </div>
+        </div>
+
+        <!-- Faixas de Pedidos -->
+        <app-card [options]="false" cardTitle="Faixas de pedidos" class="code-table" blockClass="pb-0 pt-0">
+          <div class="tb">
+           <table class="table table-borderless" *ngIf="!noFaixa">
+              <thead>
+                <tr>
+                  <th>Faixa de pedido inicial</th>
+                  <th>Faixa de pedido final</th>
+                  <th>Valor</th>
+                  <th *ngIf="!isFixoMensal">Ação</th>
+                </tr>
+              </thead>
+              <tbody *ngFor="let item of form.value.faixasPreco; let index = index"  >
+                <tr *ngIf="!item.deleted" [ngClass]="{'lastFaixa': item.isLastFaixa}" >
+                  <td>
+                    <input matinput (keypress)="numberOnly($event)" [disabled]='true' maxlength="9" type="text" class="form-control"  name="quantidadePedidos_inicio" #quantidadePedidos_inicio  (change)="faixaItemChange($event, index)" [ngClass]="{'is-invalid': item.error}" #quantidadePedidos_inicio [value]="item.quantidadePedidos_inicio | centseparator">
+                    <!-- <label class="mat-error" *ngIf="quantidadePedidos_inicio.error"  class="error jquery-validation-error small form-text invalid-feedback text-left">Faixa maior ou igual a início.</label> -->
+                  </td>
+                  <td>
+                    <input matinput (keypress)="numberOnly($event)" [disabled]='!item.isLastFaixa' type="text" maxlength="9" class="form-control"  name="quantidadePedidos_fim" #quantidadePedidos_fim [ngClass]="{'is-invalid': item.error}" (change)="faixaItemChange($event, index)" [value]="item.quantidadePedidos_fim | centseparator" max="999999999">
+                    <!-- <label *ngIf="quantidadePedidos_fim.error"  class="error jquery-validation-error small form-text invalid-feedback text-left">Faixa maior ou igual a início.</label> -->
+                  </td>
+                  <td>
+                    <input  class="form-control" (keypress)="numberOnly($event)"  name="valor" (input)="faixaItemChange($event, index)" [ngClass]="{'is-invalid': item.error}"  (change)="faixaItemToPrice($event, index)" [value]="item.valor | price">
+                  </td>
+                  <td class="action-btn" *ngIf="!isFixoMensal">
+                    <button *ngIf="item.isLastFaixa" class="mr-2" id="btn-excluir" type="button" (click)="excluirFaixa($event, index)">
+                      <i class="icon-remove feather icon-trash"></i>
+                    </button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+            <div class="noitems align-center text-center pb-3" *ngIf="!form.value.faixasPreco || form.value.faixasPreco.length === 0">
+              Nenhuma faixa de pedido inserida
+            </div>
+          </div>
+        </app-card>
+
+        <!-- Parâmetros -->
+        <app-info-card title="Parâmetros">
+          <div class="row pt-2">
+            <app-card [options]="false" cardTitle="Regras de Cobrança" class="col-md-6">
+              <mat-checkbox formControlName="cobrancaPedidos" class="col-md-12">Cobrar todos os pedidos</mat-checkbox>
+              <mat-checkbox formControlName="cobrancasCancelamentos" class="col-md-12">Não cobrar pedidos cancelados</mat-checkbox>
+              <mat-checkbox formControlName="cobrancaNaoEntregues" class="col-md-12">Não cobrar pedidos não entregues</mat-checkbox>
+            </app-card>
+            <app-card [options]="false" cardTitle="Serviços Extras Contratados" class="col-md-6">
+              <div class="row alignCenter">
+                <mat-checkbox   formControlName="sms" class="col-4" >SMS</mat-checkbox>
+                <div class="col-8 m-0">
+                  <mat-form-field class="w-100" appearance="outline" >
+                      <mat-label>Valor por SMS Enviado</mat-label>
+                      <input  matInput formControlName="valorSms"  (keypress)="numberOnly($event)" [value]="form.value.valorSms | price:4" />
+                  </mat-form-field>
+                </div>
+              </div>
+              <div class="row alignCenter">
+                <mat-checkbox formControlName="whatsapp" class="col-4" >WhatsApp</mat-checkbox>
+                <div class="col-8 m-0">
+                  <mat-form-field class="w-100" appearance="outline" >
+                    <mat-label>Valor por mensagem enviada</mat-label>
+                    <input matInput formControlName="valorWhatsapp" (keypress)="numberOnly($event)" [value]="form.value.valorWhatsapp | price:4" />
+                  </mat-form-field>
+                </div>
+              </div>
+            </app-card>
+          </div>
+        </app-info-card>
+      </div>
+    </form>
+  </div>
+
+  <!-- resumo -->
+  <div class="col-md-3 ">
+    <div class="col-md-12 info-fixed">
+      <app-info-card title="Resumo de Cobrança" class="code-table  hidden-xs" blockClass="pb-0 pt-0">
+        <div class="resumo-info">
+          <div class="resumo-row">
+            <span>Módulo: </span>
+            <span>{{form.value.modulo}}</span>
+          </div>
+          <div class="resumo-row">
+            <span>Tipo: </span>
+            <span>{{form.value.tipoRemuneracao}}</span>
+          </div>
+          <div class="resumo-row mt-2" *ngIf='form.value.faixasPreco'>
+            <span>Faixas:</span>
+          </div>
+          <div class="resumo-row mb-2" *ngFor="let item of form.value.faixasPreco" class="m-0">
+            <ul>
+              <li><div>{{item.quantidadePedidos_inicio | centseparator}} - {{item.quantidadePedidos_fim | centseparator}} / {{item.valor | price}}</div></li>
+            </ul>
+          </div>
+          <div class="resumo-row"  *ngIf='form.value.cobrancaPedidos || form.value.cobrancasCancelamentos || form.value.cobrancasCancelamentos'>
+            <span>Regras:</span>
+          </div>
+           <div class="resumo-row" class="m-0" *ngIf='form.value.cobrancaPedidos || form.value.cobrancasCancelamentos || form.value.cobrancasCancelamentos'>
+            <ul class="checkList" >
+              <li *ngIf='form.value.cobrancaPedidos'>Cobrar todos os pedidos</li>
+              <li *ngIf='form.value.cobrancasCancelamentos'>Não cobrar pedidos cancelados</li>
+              <li *ngIf='form.value.cobrancaNaoEntregues'>Não cobrar pedidos não entregues</li>
+            </ul>
+          </div><br>
+          <div class="resumo-row" *ngIf='form.value.sms || form.value.whatsapp'>
+            <span>Serviços Extra:</span>
+          </div>
+           <div class="resumo-row" class="m-0" *ngIf='form.value.sms || form.value.whatsapp'>
+            <ul class="checkList" >
+              <li *ngIf='form.value.sms'> Valor/SMS: {{form.value.valorSms | price:4}}</li>
+              <li *ngIf='form.value.whatsapp'>Valor/Whatsapp: {{form.value.valorWhatsapp | price:4}}</li>
+            </ul>
+          </div>
+        </div>
+      </app-info-card>
+      <div class="resumo-row ">
+        <button class="col-md-6 btn btn-secondary align-right" [routerLink]="['/cadastro/operadores/editar/' + operadorId]">Cancelar</button>
+        <button [disabled]="!form.valid" class="col-md-6 btn btn-primary align-right" (click)="save(form)" *ngIf="auth.canWrite('operadores/editar/:operadorId/modulos/novo')">Salvar</button>
+      </div>
+    </div>
+  </div>
+</div>

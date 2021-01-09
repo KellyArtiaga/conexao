@@ -1,0 +1,46 @@
+<form name="form" [formGroup]="form" novalidate>
+  <div class="row p-0 m-0 align-items-center">
+    <div class="card pb-0 mt-30 ">
+      <div class="card-header w-100"
+          aria-controls="collapseFilter">
+          <h5>Responsável</h5>
+      </div>
+      <div class="card-body w-100" id="collapseFilter" >
+        <div class="col-md-4 m-0">
+          <mat-form-field class="w-100" appearance="outline">
+              <mat-label>Nome</mat-label>
+              <input  matInput type="text" required
+                  formControlName='nome'>
+          </mat-form-field>
+        </div>
+        <div class="col-md-4 m-0">
+            <mat-form-field class="w-100" appearance="outline">
+                <mat-label>CPF</mat-label>
+                <input [textMask]="{mask: cpfMask}" matInput formControlName="cpf"  type="text"  autocomplete="off"
+                    required />
+            </mat-form-field>
+        </div>
+        <div class="col-md-3 m-0">
+            <mat-form-field class="w-100" appearance="outline">
+                <mat-label>Email</mat-label>
+                <input matInput formControlName="email" type="email" required />
+            </mat-form-field>
+        </div>
+        <div class="col-md-3 m-0">
+            <mat-form-field class="w-100" appearance="outline">
+                <mat-label>Telefone</mat-label>
+                <input matInput [value]="form.value.celular | phone" maxlength="15" formControlName="celular" type="tel"  required />
+            </mat-form-field>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+
+  <button class="btn btn-primary align-right" (click)="onFirstAccess()">
+    Enviar primeiro acesso
+  </button>
+  <br>
+
+</form>

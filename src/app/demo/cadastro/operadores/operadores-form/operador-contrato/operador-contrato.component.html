@@ -1,0 +1,197 @@
+<form name="form" [formGroup]="form" novalidate>
+	<div class="card pb-0 mt-4">
+		<div class="card-header w-100"
+			aria-controls="collapseFilter">
+			<h5>Dados do Contrato</h5>
+		</div>
+		<div class="card-body w-100" id="collapseFilter" >
+			<div class="row">
+        <div class="dt-field m-0 col-md-3">
+          <mat-form-field class="w-100" appearance="outline" id="x" >
+            <mat-label>Início de Vigência</mat-label>
+              <input name="dataInicio"  (change)="applyDataMascara($event.target.value, 'dataInicioVigenciaContrato')" maxlength="10" type="text" id="field-DataInicio" placeholder="dd/mm/yyyy"
+                matInput (dateChange)="getFirstDate($event)" [matDatepicker]="picker1" [min]="isEdit? '' : minDate" [max]="maxDate" formControlName="dataInicioVigenciaContrato"/>
+              <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+              <mat-datepicker #picker1></mat-datepicker>
+              <mat-error class="mat-error" *ngIf="form.get('dataInicioVigenciaContrato').hasError('required')">
+                  Campo obrigatório!
+              </mat-error>
+              <mat-error class="mat-error" *ngIf="!form.get('dataInicioVigenciaContrato').hasError('required') ">
+                Data inválida
+              </mat-error>
+            </mat-form-field>
+          </div>
+
+			<div class="dt-field m-0 col-md-3">
+          	<mat-form-field class="w-100" appearance="outline" id="y">
+              <mat-label>Fim de Vigência</mat-label>
+              <input  name="dataFim" (change)="applyDataMascara($event.target.value, 'dataFimVigenciaContrato')" (dateChange)="getSecondDate($event)"  placeholder="dd/mm/yyyy" id="field-DataFim"  [disabled]='hasInitialValue' formControlName="dataFimVigenciaContrato" matInput
+                  [min]="minBoundDate" [max]="maxDate" [matDatepicker]="picker2" />
+              <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+              <mat-datepicker #picker2></mat-datepicker>
+              <mat-error class="mat-error" *ngIf="form.get('dataFimVigenciaContrato').hasError('required')">O
+                  Data Fim de vigência é obrigatória!
+              </mat-error>
+              <mat-error class="mat-error" *ngIf="!form.get('dataFimVigenciaContrato').hasError('required')">
+                  Data inválida! Data final deve ser maior que data Inicial e estar dentro de um período de 10 anos.
+              </mat-error>
+          </mat-form-field>
+			  </div>
+
+			  <div class="dt-field m-0 col-md-3">
+					<mat-form-field class="w-100" appearance="outline">
+						<mat-label>Dia Início do Faturamento</mat-label>
+						<mat-select formControlName="diaInicioFaturamento"  name="diaInicioFaturamento">
+              <mat-option *ngFor="let day of days" [value]="day">
+                {{day}}
+              </mat-option>
+						</mat-select>
+              <mat-error class="mat-error" *ngIf="form.get('diaInicioFaturamento').hasError('required')">
+                  Campo obrigatório!
+              </mat-error>
+					</mat-form-field>
+				</div>
+				<div class="dt-field m-0 col-md-3">
+					<mat-form-field class="w-100" appearance="outline">
+						<mat-label>Dia Envio do Faturamento</mat-label>
+						<mat-select formControlName="diaEnvioFaturamento" name="diaEnvioFaturamento">
+						<mat-option *ngFor="let day of days" [value]="day">
+							{{day}}
+						</mat-option>
+						</mat-select>
+              <mat-error class="mat-error" *ngIf="form.get('diaEnvioFaturamento').hasError('required')">
+                  Campo obrigatório!
+              </mat-error>
+					</mat-form-field>
+				</div>
+			</div>
+	<!--	</div>
+ 	</div>
+  <div class="card pb-0 mt-4">
+    <div class="card-header w-100"
+      aria-controls="collapseFilter">
+      <h5>Responsável pelo Contrato</h5>
+    </div>
+    <div class="card-body w-100" id="collapseFilter" >-->
+      <div class="row">
+        <div class="dt-field m-0 col-md-3">
+          <mat-form-field class="w-100" appearance="outline">
+            <mat-label>Nome</mat-label>
+            <input matInput formControlName="nome" type="text" maxlength="45" autocomplete="off"
+              required />
+            <mat-error class="mat-error" *ngIf="form.get('nome').hasError('required')">
+                Campo obrigatório!
+            </mat-error>
+            <mat-error class="mat-error" *ngIf="!form.get('nome').hasError('required')">
+                Insira um nome válido!
+            </mat-error>
+          </mat-form-field>
+        </div>
+        <div class="dt-field m-0 col-md-3">
+          <mat-form-field class="w-100" appearance="outline">
+            <mat-label>Email</mat-label>
+            <input matInput type="email" placeholder="Email" name="email"
+                      style="text-transform: lowercase;" formControlName='email' required>
+            <mat-error class="mat-error" *ngIf="form.get('email').hasError('required')">
+                Campo obrigatório!
+            </mat-error>
+            <mat-error class="mat-error" *ngIf="!form.get('email').hasError('required') ">
+              Email inválido
+            </mat-error>
+          </mat-form-field>
+        </div>
+      <div class="dt-field m-0 col-md-3">
+          <mat-form-field class="w-100" appearance="outline">
+            <mat-label>Celular</mat-label>
+              <input  matInput type="text" placeholder="Telefone" name="celular"
+                  [minlength]="11"   formControlName='celular' [value]="form.value.celular | phone" maxlength="15" required>
+              <mat-error class="mat-error" *ngIf="form.get('celular').hasError('required')">
+                  Campo obrigatório!
+              </mat-error>
+              <mat-error class="mat-error" *ngIf="!form.get('celular').hasError('required') ">
+                Número de Celular inválido
+              </mat-error>
+          </mat-form-field>
+        </div>
+        <div class="dt-field m-0 col-md-3">
+          <mat-form-field class="w-100" appearance="outline">
+            <mat-label>CPF</mat-label>
+            <input [textMask]="{mask: cpfMask}" matInput formControlName="cpf"  type="text"  autocomplete="off"
+                  required />
+              <mat-error class="mat-error" *ngIf="form.get('cpf').hasError('required')">O
+                  CPF é obrigatório!
+              </mat-error>
+              <mat-error class="mat-error" *ngIf="!form.get('cpf').hasError('required')">
+                  CPF inválido!
+              </mat-error>
+          </mat-form-field>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Contrato -->
+	<div class="card pb-0 mt-4">
+		<div class="card-header w-100"
+			aria-controls="collapseFilter">
+			<h5>Contrato</h5>
+		</div>
+		<div class="card-body w-100" id="collapseFilter" >
+      <div class="col-md-12">
+        <div class="row">
+          <div class="col-md-6 grid w-100 p-0 hidden-xs " >
+            <figure class="figure effect-kira p-0">
+                <pdf-viewer [original-size]="false" alt="Imagem do contrato para download."[autoresize]="true" [src]="pdfSrcInitial" class="figure-img img-fluid " [render-text]="true" ></pdf-viewer>
+                <figcaption class="figure-caption">
+                <h5>Contrato</h5>
+                <p style="float: right; " class="mt-1">
+                  <a  href='{{pdfSrcInitial}}' download="contrato.pdf" target="_blank"><i class="fa fa-fw fa-download"></i></a>
+                </p>
+              </figcaption>
+            </figure>
+          </div>
+
+          <div class="col-md-6">
+            <a class="hidden-md" href='{{pdfSrcInitial}}' download download="contrato.pdf">Download contrato</a>
+            <div class="col-md-12"><p>Clique no contrato para fazer o download, <b>assine</b> e adicione o contrato assinado no campo abaixo. </p></div>
+            <file-upload  accept="pdf/*" multiple="false"  fileslimit="2"  class="col btn-upload justify-content-center" formControlName="files" (change)="onContratoChange($event)"  [control]="fileUploadControl" style="max-width: 300px;">
+              <ng-template  #placeholder>
+                <span class="upload-icon"><i class="fa fa-fw fa-upload"></i></span><br>
+                <span class="text"><b>Arraste e solte</b> o aquivo ou clique aqui.</span>
+              </ng-template>
+            </file-upload><br>
+            <div class="file-list col" *ngIf="pdfSrc">
+              <div class="file-item row p-0 m-0" *ngIf="!PdfSrcChanged">
+                <a (click)="modalContract($event)" target="_blank" id="assigned" style="cursor: pointer;">arquivo_assinado</a>
+                <a (click)="clearContract($event)" >
+                  <span class="m-2"><i class="p-1 icon-add feather icon-trash"></i></span>
+                </a>
+              </div>
+              <ul class="file-item" *ngFor="let file of fileUploadControl.value" >
+                <li >
+                  {{ file.name }}
+                  <a (click)="fileUploadControl.removeFile(file)" >
+                    <span class="m-2"><i class="p-1 icon-add feather icon-trash"></i></span>
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+	</div>
+
+	<div class="row justify-content-center p-0 m-0">
+		<div class="col-md-12 p-0 m-0">
+		  <span class="inform-card mt-1 mb-1">
+        <i class="p-1 icon  feather icon-alert-circle"></i>
+        Em caso de alteração de email no contrato, salve antes de gerar primeiro acesso.
+      </span>
+			<button  type="submit" class="btn btn-primary align-right"
+			(click)="save(form)">Salvar</button>
+			<button  type="button" class="btn btn-success align-right" (click)="firstAcess(form)">Enviar Primeiro Acesso</button>
+		</div>
+	</div>
+</form>
+

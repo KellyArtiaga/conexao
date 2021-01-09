@@ -1,0 +1,184 @@
+<form name="form" [formGroup]="form" novalidate>
+  <div class="row p-0 m-0 align-items-center">
+    <div class="card pb-0 mt-30 ">
+      <div class="card-header w-100" aria-controls="collapseFilter">
+        <h5>Empresa</h5>
+      </div>
+      <div class="card-body w-100" id="collapseFilter" >
+        <div class="col-md-4 m-0">
+          <mat-form-field class="w-100" appearance="outline">
+            <mat-label>Razão Social</mat-label>
+            <input matInput formControlName="razaoSocial" type="text" maxlength="45" autocomplete="off"  required />
+            <mat-error class="mat-error" *ngIf="form.get('razaoSocial').hasError('required')">A
+              Razão Social é obrigatória!
+            </mat-error>
+          </mat-form-field>
+        </div>
+        <div class="col-md-3 m-0">
+          <mat-form-field class="w-100" appearance="outline">
+            <mat-label>CNPJ</mat-label>
+            <input matInput formControlName="cnpj" type="text"  required  [textMask]="{mask: cnpjMask}" />
+            <mat-error class="mat-error" *ngIf="form.get('cnpj').hasError('required')">O
+              CNPJ é obrigatório!
+            </mat-error>
+            <mat-error class="mat-error" *ngIf="!form.get('cnpj').hasError('required')">
+                CNPJ
+                inválido!
+            </mat-error>
+          </mat-form-field>
+        </div>
+        <div class="col-md-3 m-0">
+          <mat-form-field class="w-100" appearance="outline">
+            <mat-label>Inscrição Municipal</mat-label>
+            <input matInput formControlName="inscricaoMunicipal" type="text" maxlength="14" required  (keypress)="numberOnly($event)"/>
+            <mat-error class="mat-error" *ngIf="form.get('inscricaoMunicipal').hasError('required')">
+              Campo obrigatório!
+            </mat-error>
+            <mat-error class="mat-error" *ngIf="!form.get('inscricaoMunicipal').hasError('required') ">
+              Número de inscrição inválida!
+            </mat-error>
+          </mat-form-field>
+        </div>
+        <div class="col-md-4 m-0">
+          <mat-form-field class="w-100" appearance="outline">
+            <mat-label>Email</mat-label>
+            <input matInput type="email" name="email" style="text-transform: lowercase;" formControlName='email' id=" loginMaster" required>
+            <mat-error class="mat-error" *ngIf="form.get('email').hasError('required')">
+              Campo obrigatório!
+            </mat-error>
+            <mat-error class="mat-error" *ngIf="!form.get('email').hasError('required') ">
+              Email inválido
+            </mat-error>
+          </mat-form-field>
+        </div>
+        <div class="col-md-3 m-0">
+          <mat-form-field class="w-100" appearance="outline">
+            <mat-label>Telefone</mat-label>
+            <input maxlength="15" matInput type="text" name="telefoneContato"
+              formControlName='telefoneContato' [value]="form.value.telefoneContato | phone" required>
+              <mat-error class="mat-error" *ngIf="form.get('telefoneContato').hasError('required')">
+                Campo obrigatório!
+              </mat-error>
+              <mat-error class="mat-error" *ngIf="!form.get('telefoneContato').hasError('required') ">
+                Número de telefone inválido
+              </mat-error>
+          </mat-form-field>
+        </div>
+        <div class=" col-md-3 m-0" *ngIf="auth.getRoleIndex() === 0">
+          <mat-form-field class="w-100" appearance="outline">
+            <mat-label>Operador Responsável</mat-label>
+            <mat-select required name="tenant" formControlName="tenant" [compareWith]="compare" >
+              <mat-option *ngFor="let op of operadores" [value]="op" >
+                  {{op.name || op.razaoSocial}}
+              </mat-option>
+            </mat-select>
+            <mat-error class="mat-error" *ngIf="form.get('tenant').hasError('required')">
+              Campo obrigatório!
+            </mat-error>
+          </mat-form-field>
+        </div>
+
+        <div class="col-md-3 m-0">
+          <mat-form-field class="w-100" appearance="outline">
+            <mat-label>Centro de custo</mat-label>
+            <input formControlName="centroCusto" matInput type="text"  name="codigo">
+          </mat-form-field>
+        </div>
+      </div>
+    </div>
+
+    <div class="card pb-0 ">
+      <div class="card-header w-100" aria-controls="collapseFilter">
+        <h5>Endereço</h5>
+      </div>
+      <div class="card-body w-100" id="collapseFilter" >
+        <div class="col-md-3 m-0">
+          <mat-form-field class="w-100" appearance="outline">
+            <mat-label>CEP</mat-label>
+            <input matInput type="text" appCep (onCepFound)="cepFound($event)" name="cep" [textMask]="{mask: cepMask}" formControlName='cep' >
+          <mat-error class="mat-error"*ngIf="!form.get('cep').hasError('required')">Insira um cep válido!</mat-error>
+          </mat-form-field>
+        </div>
+        <div class="col-md-3 m-0">
+          <mat-form-field class="w-100" appearance="outline">
+            <mat-label>Estado</mat-label>
+            <input matInput type="text" name="uf" formControlName='uf' required>
+            <mat-error class="mat-error" *ngIf="form.get('uf').hasError('required')">O Estado é obrigatório!</mat-error>
+          </mat-form-field>
+        </div>
+        <div class="col-md-3 m-0">
+          <mat-form-field class="w-100" appearance="outline">
+            <mat-label>Cidade</mat-label>
+            <input matInput type="text" name="cidade" formControlName='cidade' required>
+            <mat-error class="mat-error" *ngIf="form.get('cidade').hasError('required')">A Cidade é obrigatória!</mat-error>
+          </mat-form-field>
+        </div>
+        <div class="col-md-3 m-0">
+          <mat-form-field class="w-100" appearance="outline">
+            <mat-label>Bairro</mat-label>
+            <input matInput type="text" name="bairro" formControlName='bairro' required>
+            <mat-error class="mat-error" *ngIf="form.get('bairro').hasError('required')">O Bairro é obrigatório!</mat-error>
+          </mat-form-field>
+        </div>
+        <div class="col-md-3 m-0">
+          <mat-form-field class="w-100" appearance="outline">
+            <mat-label>Logradouro</mat-label>
+            <input matInput type="text" name="logradouro" formControlName='logradouro' required>
+            <mat-error class="mat-error" *ngIf="form.get('logradouro').hasError('required')">O logradouro é obrigatório!</mat-error>
+          </mat-form-field>
+        </div>
+        <div class="col-md-3 m-0">
+          <mat-form-field class="w-100" appearance="outline">
+            <mat-label>Número</mat-label>
+            <input matInput type="number" name="numero" min="0" formControlName='numero' required>
+            <mat-error class="mat-error"*ngIf="form.get('numero').hasError('required')">O número é obrigatório!</mat-error>
+            <mat-error class="mat-error"*ngIf="form.get('numero').hasError('min')">Número inválido!</mat-error>
+          </mat-form-field>
+        </div>
+        <div class="col-md-3 m-0">
+          <mat-form-field class="w-100" appearance="outline">
+            <mat-label>Complemento</mat-label>
+            <input matInput type="text" name="complemento"  formControlName='complemento'>
+          </mat-form-field>
+        </div>
+        <div class="col-md-3 m-0">
+          <mat-form-field class="w-100" appearance="outline">
+            <mat-label>Referência</mat-label>
+            <input matInput type="text" name="estado"  formControlName='referencia'>
+          </mat-form-field>
+        </div>
+      </div>
+    </div>
+
+
+    <div class="card pb-0 ">
+      <div class="card-header w-100"  aria-controls="collapseFilter">
+        <h5>Logomarca</h5>
+      </div>
+      <div class="col-3 mt-3">
+        <div class="form-check">
+          <mat-checkbox formControlName="exibirFotoPerfil" type="checkbox"  id="exibirFotoPerfil">Exibir Logomarca</mat-checkbox>
+        </div>
+      </div>
+      <div class="card-body w-100" id="collapseFilter" >
+        <div class="col-md-3 img-preview">
+          <img id="profile-photo" [src]="form.value.urlFotoPerfil" alt="">
+        </div>
+        <div class="col-md-9 m-0">
+          <file-upload multiple="false" fileslimit="2" (change)="onProfileFileChange($event)" formControlName="files">
+            <ng-template  #placeholder>
+              <span class="upload-icon"><i class="fa fa-fw fa-upload"></i></span><br>
+              <span class="text"><b>Arraste e solte</b> a imagem ou clique aqui.</span>
+            </ng-template>
+          </file-upload>
+        </div>
+      </div>
+    </div>
+
+  </div>
+  <button *ngIf="auth.canWrite('empresas')" type="submit" class="btn btn-primary align-right"
+      (click)="onSubmit(form)">Salvar</button>
+  <button *ngIf="form.get('id').value && auth.canDelete('empresas')" class="btn btn-danger align-right"
+      (click)="confirm(form)">Excluir</button>
+  <br>
+</form>

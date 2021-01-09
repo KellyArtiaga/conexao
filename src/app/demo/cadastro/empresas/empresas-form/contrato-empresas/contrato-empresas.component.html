@@ -1,0 +1,55 @@
+<div class="card mt-2 pt-1 pt-0">
+    <div class="side-card container pt-2 card-left-border">
+        <form name="form" [formGroup]="form" novalidate>
+            <div class="row p-0 m-0 align-items-center ">
+                <div class="col-md-3 m-0">
+                    <mat-form-field class="w-100" appearance="outline">
+                        <mat-label>Data início de contrato</mat-label>
+                        <input matInput formControlName="dataInicio" type="date" maxlength="45" autocomplete="off"
+                            required />
+                    </mat-form-field>
+                </div>
+                <div class="col-md-3 m-0">
+                    <mat-form-field class="w-100" appearance="outline">
+                        <mat-label>Data fim de contrato</mat-label>
+                        <input matInput formControlName="dataFim" type="date" maxlength="45" autocomplete="off"
+                            required />
+                    </mat-form-field>
+                </div>
+                <div class="text-center mr-2 ml-2 mb-3 mt-1 float-right">
+                    <button class="btn btn-primary" type="submit">Adicionar vigência ao contrato</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<div class="card mt-1">
+    <div class="container pt-4 pb-4 card-left-border">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="text-center m-t-20 float-right m-2">
+                    <a id="btn-export-pdf" class="btn-export mt-16 mt-sm-0 align-right" (click)='exportToPDF()'
+                        type="button">
+                        <span class="m-2"><i class="icon-export feather icon-printer"></i> Exportar para
+                            assinar</span>
+                    </a>
+                </div>
+                <div id="bypassme">
+                    <div style="height: 30vh; overflow: auto; width:100%;" id='contract'>
+                        <app-contrato-file></app-contrato-file>
+                    </div>
+                </div>
+                <div class="row align-items-center pt-2" syle="vertical-align: bottom;">
+                    <div class="col input-file">
+                        <!-- <form [formGroup]="demoForm" class="w-100">
+                            <file-upload formControlName="files"></file-upload>
+                        </form> -->
+                    </div>
+                    <div class="col">
+                        <button class="btn btn-primary" type="submit">Salvar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

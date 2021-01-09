@@ -1,0 +1,47 @@
+
+
+<div class="row">
+    <div class="col-sm-12">
+        <h5>Novo Operador</h5>
+        <hr>
+
+        <!-- Tabs-->
+        <mat-tab-group>
+          <mat-tab  label="Cadastro Operador" >
+            <ng-template mat-tab-label>
+              Cadastro Operador
+              <mat-icon class="tab-icon" *ngIf="isEditing()">check_circle</mat-icon>
+            </ng-template>
+            <app-operador-cadastro></app-operador-cadastro>
+          </mat-tab>
+          <mat-tab  label="Serviços" *ngIf="isServicesOpen()">
+            <ng-template mat-tab-label>
+              Serviços
+              <mat-icon class="tab-icon" *ngIf="checkServicos">check_circle</mat-icon>
+            </ng-template>
+            <app-operador-servicos (check)="feedbackCheck($event, 'servicos')"></app-operador-servicos>
+          </mat-tab>
+          <mat-tab  label="Contrato" *ngIf="isContractsOpen()">
+            <ng-template mat-tab-label>
+              Contrato
+              <mat-icon class="tab-icon" *ngIf="checkContrato">check_circle</mat-icon>
+            </ng-template>
+            <app-operador-contrato (check)="feedbackCheck($event, 'contrato')"></app-operador-contrato>
+          </mat-tab>
+          <mat-tab  label="Contrato" >
+            <ng-template mat-tab-label>
+              Status
+            </ng-template>
+            <app-operador-status></app-operador-status>
+          </mat-tab>
+        </mat-tab-group>
+    </div>
+</div>
+<div class="row mt-3">
+    <div class="header deep-purple p-24 col-md-12" fxLayout="column" fxLayoutAlign="center center" fxLayout.gt-xs="row"
+        fxLayoutAlign.gt-xs="space-between center">
+        <a id="btn-voltar" class="btn btn-primary mt-16 mt-sm-0" [routerLink]="['/cadastro/operadores']">
+            <span class="m-2"><i class="feather icon-arrow-left"></i> Voltar</span>
+        </a>
+    </div>
+</div>

@@ -1,0 +1,83 @@
+<div class="row">
+    <div class="col-sm-12 ">
+        <h5>Alterar senha</h5>
+        <hr>
+        <div class="card">
+            <div class="container card-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <form name="form" [formGroup]="form" novalidate>
+                            <div class="row p-0 m-0 align-items-center">
+                                <div class="form-group col-md-3 m-0">
+                                    <mat-form-field class="w-100" appearance="outline">
+                                        <mat-label>Senha atual</mat-label>
+                                        <input matInput formControlName="senhaAtual"
+                                            [type]="showCurrentPassword ? 'text' : 'password'" maxlength="20"
+                                            autocomplete="off" required>
+                                        <mat-icon class="cursor-pointer" matTooltip="{{labelMostrarSenha}}"
+                                            *ngIf="!showCurrentPassword" (click)="password('current')" matSuffix>
+                                            visibility_off</mat-icon>
+                                        <mat-icon class="cursor-pointer" matTooltip="{{labelOcultarSenha}}"
+                                            *ngIf="showCurrentPassword" (click)="password('current')" matSuffix>
+                                            visibility</mat-icon>
+                                    </mat-form-field>
+                                </div>
+                                <div class="form-group col-md-3 m-0">
+                                    <mat-form-field class="w-100" appearance="outline">
+                                        <mat-label>Nova Senha</mat-label>
+                                        <input matInput formControlName="novaSenha"
+                                            [type]="showNewPassword ? 'text' : 'password'"
+                                            (keyup)="senhaAtendeCriteriosEstabelecidos()" maxlength="20"
+                                            autocomplete="off" required>
+                                        <mat-icon class="cursor-pointer" matTooltip="{{labelMostrarSenha}}"
+                                            *ngIf="!showNewPassword" (click)="password('new')" matSuffix>visibility_off
+                                        </mat-icon>
+                                        <mat-icon class="cursor-pointer" matTooltip="{{labelOcultarSenha}}"
+                                            *ngIf="showNewPassword" (click)="password('new')" matSuffix>visibility
+                                        </mat-icon>
+                                        <mat-hint>(Mínimo de 6 caracteres, incluindo números e letras(maiúscula e
+                                            minúscula).)</mat-hint>
+
+                                    </mat-form-field>
+                                </div>
+                                <div class="form-group col-md-3 m-0">
+                                    <mat-form-field class="w-100" appearance="outline">
+                                        <mat-label>Confirmar Nova Senha
+                                        </mat-label>
+                                        <input matInput formControlName="confirmarNovaSenha"
+                                            [type]="showConfirmPassword ? 'text' : 'password'" maxlength="20"
+                                            autocomplete="off" required>
+                                        <mat-icon class="cursor-pointer" matTooltip="{{labelMostrarSenha}}"
+                                            *ngIf="!showConfirmPassword" (click)="password('confirm')" matSuffix>
+                                            visibility_off</mat-icon>
+                                        <mat-icon class="cursor-pointer" matTooltip="{{labelOcultarSenha}}"
+                                            *ngIf="showConfirmPassword" (click)="password('confirm')" matSuffix>
+                                            visibility</mat-icon>
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                            <button type="submit" class="btn btn-primary align-right"
+                                (click)="onSubmit(form)">Confirmar</button>
+                            <button type="button" class="btn btn-info align-right" (click)="esqueci()" disabled>Esqueci
+                                minha
+                                Senha</button>
+
+
+                            <br>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Cancelar-->
+        <div class="row ">
+            <div class="header deep-purple p-24 col-md-12" fxLayout="column" fxLayoutAlign="center center"
+                fxLayout.gt-xs="row" fxLayoutAlign.gt-xs="space-between center">
+                <a id="btn-voltar" class="btn btn-primary mt-16 mt-sm-0" [routerLink]="['/dashboard/default']">
+                    <span class="m-2">Cancelar</span>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>

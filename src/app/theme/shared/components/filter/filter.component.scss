@@ -1,0 +1,22 @@
+:host {
+  width: 100%
+}
+
+.tab-icon{
+  font-size: 20px;
+  padding:0;
+  margin-left:5px;
+  margin-bottom:-5px;
+  height: auto;
+  width: auto;
+
+}
+.filter-header-items {
+  cursor: pointer;
+  display: flex !important;
+  justify-content: space-between;
+  width: 100% !important;
+}
+.card-header {
+  cursor: pointer;
+}

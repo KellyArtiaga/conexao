@@ -1,0 +1,7 @@
+
+    <app-card cardTitle="Lista de Veículos" cardClass="code-table">
+      <app-skill-selector (onChange)="onChange.emit($event)" (onRemove)="onRemoveCard($event)" (onSelect)="onSelectCard($event)" [possibleSkills]="possibleVehicles" [value]="vehicles" selectable="true" placeholder="Adicionar Forma de Condução..."></app-skill-selector>
+
+    </app-card>
+
+<app-entregadores-veiculos-cadastro  *ngIf="editingData !== null" (onDataChange)="onDataChange($event)" [data]="editingData"></app-entregadores-veiculos-cadastro>

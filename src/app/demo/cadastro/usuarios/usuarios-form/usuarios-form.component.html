@@ -1,0 +1,22 @@
+<div class="row">
+  <div class="col-sm-12">
+    <h5>Novo Usuário</h5>
+    <hr>
+    <mat-tab-group>
+      <mat-tab label="DadosPessoais">
+          <app-dados-pessoais></app-dados-pessoais>
+      </mat-tab>
+      <mat-tab label="Status">
+          <app-usuarios-status></app-usuarios-status>
+      </mat-tab>
+    </mat-tab-group>
+  </div>
+</div>
+<div class="row mt-3">
+  <div class="header deep-purple p-24 col-md-12" fxLayout="column" fxLayoutAlign="center center" fxLayout.gt-xs="row"
+    fxLayoutAlign.gt-xs="space-between center">
+    <a id="btn-voltar" class="btn btn-primary mt-16 mt-sm-0" [routerLink]="['/cadastro/usuarios']">
+        <span class="m-2"><i class="feather icon-arrow-left"></i> Voltar</span>
+    </a>
+  </div>
+</div>

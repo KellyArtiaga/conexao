@@ -1,0 +1,513 @@
+
+<form name="form" [formGroup]="form" novalidate>
+
+  <div class="row p-0 m-0 align-items-center">
+    <app-side-nav (onChange)="changeSubPage($event)" [selected]="subPage" [image]="form.value.urlFotoPerfil" [errors]="getErrors()" [items]="subPagesList">
+      <div class="card pb-0 " *ngIf="subPagesList[subPage] === 'Dados Pessoais'">
+        <div class="card-header w-100" aria-controls="collapseFilter">
+          <h5>Vínculo</h5>
+        </div>
+        <div class="card-body w-100">
+          <div class=" col-md-4 m-0">
+            <mat-form-field class="w-100" appearance="outline">
+                <mat-label>Tipo</mat-label>
+                <mat-select required name="tipoVinculo"  formControlName="tipoVinculo" >
+                    <mat-option [value]="vinculo" *ngFor="let vinculo of vinculos">
+                      {{vinculo}}
+                    </mat-option>
+
+                </mat-select>
+                <mat-error class="mat-error" *ngIf="form.get('tipoVinculo').hasError('required')">
+                  Campo obrigatório!
+              </mat-error>
+            </mat-form-field>
+          </div>
+          <div class="col-md-4 m-0" *ngIf="form.value.tipoVinculo === 'CLT'">
+            <mat-form-field class="w-100" appearance="outline">
+                <mat-label>CTPS</mat-label>
+                <input [textMask]="{mask: nitMask, guide: false}" matInput type="text" name="ctps" required
+                    style="text-transform: lowercase;" formControlName='ctps'>
+
+                    <mat-error class="mat-error" *ngIf="!form.get('ctps').hasError('required') ">
+                      Número de telefone inválido
+                    </mat-error>
+              </mat-form-field>
+          </div>
+          <div class="dt-field m-0 col-md-4" *ngIf="form.value.tipoVinculo === 'CLT'">
+            <mat-form-field class="w-100" appearance="outline" id="y">
+                <mat-label>Data de Admissao</mat-label>
+                <input required name="dataAdmissao" (change)="applyDataMascara($event.target.value, 'dataAdmissao')"  placeholder="dd/mm/yyyy" id="field-DataFim"  formControlName="dataAdmissao" matInput [matDatepicker]="picker3" />
+                <mat-datepicker-toggle matSuffix [for]="picker3"></mat-datepicker-toggle>
+                <mat-datepicker #picker3></mat-datepicker>
+                <mat-error class="mat-error" *ngIf="form.get('dataAdmissao').hasError('required')">O
+                    Campo Obrigatório!
+                </mat-error>
+                <mat-error class="mat-error" *ngIf="!form.get('dataAdmissao').hasError('required')">
+                    Data inválida!
+                </mat-error>
+            </mat-form-field>
+          </div>
+          <div class="dt-field m-0 col-md-4" *ngIf="form.value.tipoVinculo === 'COOPERADO'">
+            <mat-form-field class="w-100" appearance="outline" id="y">
+                <mat-label>Data do Curso de Cooperativismo</mat-label>
+                <input required  name="dataAdmissao" (change)="applyDataMascara($event.target.value, 'dataCursoCooperativismo')"  placeholder="dd/mm/yyyy" id="field-DataFim"  formControlName="dataCursoCooperativismo" matInput [matDatepicker]="picker4" />
+                <mat-datepicker-toggle matSuffix [for]="picker4"></mat-datepicker-toggle>
+                <mat-datepicker #picker4></mat-datepicker>
+                <mat-error class="mat-error" *ngIf="form.get('dataCursoCooperativismo').hasError('required')">O
+                    Campo Obrigatório!
+                </mat-error>
+                <mat-error class="mat-error" *ngIf="!form.get('dataCursoCooperativismo').hasError('required')">
+                    Data inválida!
+                </mat-error>
+            </mat-form-field>
+          </div>
+          <div class="dt-field m-0 col-md-4" *ngIf="form.value.tipoVinculo === 'CONTRATADO'">
+            <mat-form-field class="w-100" appearance="outline" id="y">
+                <mat-label>Data de Inicio de Vigência</mat-label>
+                <input required  name="dataAdmissao" (change)="applyDataMascara($event.target.value, 'dataVigenciaInicio')"  placeholder="dd/mm/yyyy" id="field-DataFim"  formControlName="dataVigenciaInicio" matInput [matDatepicker]="picker5" />
+                <mat-datepicker-toggle matSuffix [for]="picker5"></mat-datepicker-toggle>
+                <mat-datepicker #picker5></mat-datepicker>
+                <mat-error class="mat-error" *ngIf="form.get('dataVigenciaInicio').hasError('required')">O
+                    Campo Obrigatório!
+                </mat-error>
+                <mat-error class="mat-error" *ngIf="!form.get('dataVigenciaInicio').hasError('required')">
+                    Data inválida!
+                </mat-error>
+            </mat-form-field>
+          </div>
+          <div class="dt-field m-0 col-md-4">
+            <mat-form-field class="w-100" appearance="outline" id="y" *ngIf="form.value.tipoVinculo === 'CONTRATADO'">
+                <mat-label>Data de Fim de Vigência</mat-label>
+                <input required  name="dataAdmissao" (change)="applyDataMascara($event.target.value, 'dataVigenciaFim')"  placeholder="dd/mm/yyyy" id="field-DataFim"  formControlName="dataVigenciaFim" matInput [matDatepicker]="picker6" />
+                <mat-datepicker-toggle matSuffix [for]="picker6"></mat-datepicker-toggle>
+                <mat-datepicker #picker6></mat-datepicker>
+                <mat-error class="mat-error" *ngIf="form.get('dataVigenciaFim').hasError('required')">O
+                    Campo Obrigatório!
+                </mat-error>
+                <mat-error class="mat-error" *ngIf="!form.get('dataVigenciaFim').hasError('required')">
+                    Data inválida!
+                </mat-error>
+            </mat-form-field>
+          </div>
+
+        </div>
+
+      </div>
+      
+      <div class="card pb-0 " *ngIf="subPagesList[subPage] === 'Dados Pessoais'">
+        <div class="card-header w-100"
+            aria-controls="collapseFilter">
+            <h5>Entregador</h5>
+        </div>
+        <div class="card-body w-100" id="collapseFilter" >
+          <div class="col-md-4 m-0">
+            <mat-form-field class="w-100" appearance="outline">
+                <mat-label>Matrícula</mat-label>
+                <input required maxlength="6" matInput type="text" placeholder="Matrícula" name="codigo"
+                    formControlName='matricula' required>
+                <mat-error class="mat-error" >Campo inválido!</mat-error>
+            </mat-form-field>
+          </div>
+          <div class=" col-md-4 m-0" *ngIf="auth.getRoleIndex() === 0">
+            <mat-form-field class="w-100" appearance="outline">
+                <mat-label>Operador Responsável</mat-label>
+                <mat-select required name="tenant"  formControlName="tenant" [compareWith]="compare">
+                    <mat-option [value]="t" *ngFor="let t of tenants">
+                      {{t.name}}
+                    </mat-option>
+
+                </mat-select>
+                <mat-error class="mat-error" *ngIf="form.get('tenant').hasError('required')">
+                  Campo obrigatório!
+              </mat-error>
+            </mat-form-field>
+          </div>
+          <div class="col-md-4 m-0">
+              <mat-form-field class="w-100" appearance="outline">
+                  <mat-label>Nome</mat-label>
+                  <input matInput formControlName="nome" type="text" maxlength="45" autocomplete="off"
+                      required />
+                  <mat-error class="mat-error" *ngIf="form.get('nome').hasError('required')">A
+                        Campo obrigatório!</mat-error>
+
+              </mat-form-field>
+          </div>
+          <div class="col-md-4 m-0">
+              <mat-form-field class="w-100" appearance="outline">
+                  <mat-label>CPF</mat-label>
+                  <input matInput formControlName="cpf" type="text"  required placeholder="___.___.___-__" [textMask]="{mask: cpfMask, guide: false}" />
+                  <mat-error class="mat-error" *ngIf="form.get('cpf').hasError('required')">Campo obrigatório!
+                </mat-error>
+                <mat-error class="mat-error" *ngIf="!form.get('cpf').hasError('required')">
+                    CPF inválido!
+                </mat-error>
+              </mat-form-field>
+          </div>
+
+          <div class="col-md-4 m-0">
+            <mat-form-field class="w-100" appearance="outline">
+                <mat-label>RG</mat-label>
+                <input matInput formControlName="rg" type="text"  required placeholder="__.___.___-___" [textMask]="{mask: rgMask, guide: false}" />
+                <mat-error class="mat-error" *ngIf="form.get('rg').hasError('required')">
+                  Campo obrigatório!
+              </mat-error>
+              <mat-error class="mat-error" *ngIf="!form.get('rg').hasError('required')">
+                  RG inválido!
+              </mat-error>
+            </mat-form-field>
+        </div>
+        <div class="col-md-4 m-0">
+          <mat-form-field class="w-100" appearance="outline">
+              <mat-label>Orgão Emissor(RG)</mat-label>
+              <input matInput formControlName="emisorRg" type="text"  required />
+              <mat-error class="mat-error" *ngIf="form.get('emisorRg').hasError('required')">
+                Campo obrigatório!
+            </mat-error>
+            <mat-error class="mat-error" *ngIf="!form.get('emisorRg').hasError('required')">
+                CPF inválido!
+            </mat-error>
+          </mat-form-field>
+      </div>
+
+          <div class=" col-md-4 m-0">
+            <mat-form-field class="w-100" appearance="outline">
+                <mat-label>Estado Civil</mat-label>
+                <mat-select name="estadoCivil"  formControlName="estadoCivil">
+
+                    <mat-option *ngFor="let item of estadosCivis" [value]="item">
+                      {{toNormal(item)}}
+                    </mat-option>
+
+                </mat-select>
+                <mat-error class="mat-error" *ngIf="form.get('estadoCivil').hasError('required')">
+                  Campo obrigatório!
+              </mat-error>
+            </mat-form-field>
+          </div>
+
+          <div class="dt-field m-0 col-md-4">
+            <mat-form-field class="w-100" appearance="outline" id="y">
+                <mat-label>Data de Nascimento</mat-label>
+                <input  name="dataNascimento" (change)="applyDataMascara($event.target.value, 'dataNascimento')"  placeholder="dd/mm/yyyy" id="field-DataFim"  formControlName="dataNascimento" matInput [matDatepicker]="picker2" />
+                <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+                <mat-datepicker #picker2></mat-datepicker>
+                <mat-error class="mat-error" *ngIf="form.get('dataNascimento').hasError('required')">O
+                    Campo Obrigatório!
+                </mat-error>
+                <mat-error class="mat-error" *ngIf="!form.get('dataNascimento').hasError('required')">
+                    Data inválida!
+                </mat-error>
+            </mat-form-field>
+          </div>
+          <!-- <div class="col-md-4 m-0">
+              <mat-form-field class="w-100" appearance="outline">
+                  <mat-label>Telefone</mat-label>
+                  <input matInput type="tel" name="telefoneContato"
+                      style="text-transform: lowercase;" formControlName='telefoneContato' [value]="form.value.telefoneContato | phone"
+                      >
+                      <mat-error class="mat-error" *ngIf="form.get('telefoneContato').hasError('required')">
+                        Campo obrigatório!
+                    </mat-error>
+                    <mat-error class="mat-error" *ngIf="!form.get('telefoneContato').hasError('required') ">
+                      Número de telefone inválido
+                    </mat-error>
+              </mat-form-field>
+          </div> -->
+
+
+
+          <div class="col-md-4 m-0">
+            <mat-form-field class="w-100" appearance="outline">
+                <mat-label>Email</mat-label>
+                <input matInput type="email" name="telefoneCelular"
+                    style="text-transform: lowercase;" formControlName='email'
+                      required>
+                      <mat-error class="mat-error" *ngIf="form.get('email').hasError('required')">
+                        Campo obrigatório!
+                    </mat-error>
+                    <mat-error class="mat-error" *ngIf="!form.get('email').hasError('required') ">
+                      Email inválido
+                    </mat-error>
+              </mat-form-field>
+          </div>
+
+          <div class="col-md-4 m-0">
+            <mat-form-field class="w-100" appearance="outline">
+                <mat-label>Número do NIT</mat-label>
+                <input matInput type="text" name="nit" [textMask]="{mask: nitMask, guide: false}"
+                    style="text-transform: lowercase;" formControlName='nit' placeholder="___.______.__-__"
+                      required>
+                      <mat-error class="mat-error" *ngIf="form.get('nit').hasError('required')">
+                        Campo obrigatório!
+                    </mat-error>
+                    <mat-error class="mat-error" *ngIf="!form.get('nit').hasError('required') ">
+                      Número do NIT inválido
+                    </mat-error>
+              </mat-form-field>
+          </div>
+
+
+
+          <div class="col-md-4 m-0">
+            <mat-form-field class="w-100" appearance="outline">
+                <mat-label>Celular</mat-label>
+                <input matInput type="tel" name="telefoneCelular" maxlength="15"
+                    style="text-transform: lowercase;" formControlName='celular' [value]="form.value.celular | phone"
+                      required placeholder="(__) _____-____">
+                      <mat-error class="mat-error" *ngIf="form.get('celular').hasError('required')">
+                        Campo obrigatório!
+                    </mat-error>
+                    <mat-error class="mat-error" *ngIf="!form.get('celular').hasError('required') ">
+                      Número de telefone inválido
+                    </mat-error>
+              </mat-form-field>
+          </div>
+          <div class="col-md-4 m-0">
+            <mat-form-field class="w-100" appearance="outline">
+                <mat-label>Telefone 2</mat-label>
+                <input matInput type="tel" name="telefone1" maxlength="15" placeholder="(__) _____-____"
+                    style="text-transform: lowercase;" formControlName='telefone1' [value]="form.value.telefone1 | phone">
+
+                    <mat-error class="mat-error" *ngIf="!form.get('telefone1').hasError('required') ">
+                      Número de telefone inválido
+                    </mat-error>
+              </mat-form-field>
+          </div>
+          <div class="col-md-4 m-0">
+            <mat-form-field class="w-100" appearance="outline">
+                <mat-label>Telefone 3</mat-label>
+                <input matInput type="tel" name="telefone2" maxlength="15" placeholder="(__) _____-____"
+                    style="text-transform: lowercase;" formControlName='telefone2' [value]="form.value.telefone2 | phone">
+
+                    <mat-error class="mat-error" *ngIf="!form.get('telefone2').hasError('required') ">
+                      Número de telefone inválido
+                    </mat-error>
+              </mat-form-field>
+          </div>
+           <div class="col-md-4 m-0">
+            <mat-form-field class="w-100" appearance="outline">
+                <mat-label>Grau de Risco</mat-label>
+                <input matInput type="number" name="grauRisco"
+                    style="text-transform: lowercase;" formControlName='grauRisco'
+                      required>
+                    <mat-error class="mat-error" *ngIf="!form.get('grauRisco').hasError('required') ">
+                      Grau de Risco inválido, escolha um número entre 0 e 10
+                    </mat-error>
+              </mat-form-field>
+          </div>
+
+          <div class="col-12 m-0">
+            <div class="form-check">
+                <mat-checkbox formControlName='active' name='active' type="checkbox"
+                    id="activeMaster">Ativar</mat-checkbox>
+            </div>
+        </div>
+
+        </div>
+      </div>
+      <div class="card pb-0 " *ngIf="subPage === 'img'">
+        <div class="card-header w-100"
+            aria-controls="collapseFilter">
+            <h5>Foto</h5>
+        </div>
+        <div class="col-3 m-0 mt-3">
+          <div class="form-check">
+              <mat-checkbox formControlName="exibirFotoPerfil" type="checkbox"  id="exibirFotoPerfil">Exibir Foto</mat-checkbox>
+          </div>
+       </div>
+        <div class="card-body w-100" id="collapseFilter" >
+          <div class="col-md-4 img-preview">
+            <img id="img-src" [src]="form.value.urlFotoPerfil" alt="">
+
+          </div>
+          <div class="col-md-9 m-0">
+            <file-upload multiple="false" fileslimit="2" (change)="onProfileFileChange($event)" formControlName="files">
+              <ng-template  #placeholder>
+                <span class="upload-icon"><i class="fa fa-fw fa-upload"></i></span><br>
+                <span class="text"><b>Arraste e solte</b> a imagem ou clique aqui.</span>
+              </ng-template>
+            </file-upload>
+          </div>
+
+        </div>
+      </div>
+      <div class="card pb-0 " *ngIf="subPagesList[subPage] === 'Dados Pessoais'">
+        <div class="card-header w-100"
+            aria-controls="collapseFilter">
+            <h5>Endereço</h5>
+        </div>
+        <div class="card-body w-100" id="collapseFilter" >
+          <div class="col-md-4 m-0">
+            <mat-form-field class="w-100" appearance="outline">
+                <mat-label>CEP</mat-label>
+                <input matInput type="text" appCep (onCepFound)="cepFound($event)" name="cep" placeholder="_____-___" [textMask]="{mask: cepMask, guide: false}"
+                    formControlName='cep' >
+            <mat-error class="mat-error"*ngIf="!form.get('cep').hasError('required')">Insira um cep válido!</mat-error>
+            </mat-form-field>
+          </div>
+          <div class="col-md-4 m-0">
+              <mat-form-field class="w-100" appearance="outline">
+                  <mat-label>Estado</mat-label>
+                  <input matInput type="text" name="uf"
+                      formControlName='uf' required>
+                <mat-error class="mat-error" *ngIf="form.get('uf').hasError('required')">O Estado é obrigatório!</mat-error>
+              </mat-form-field>
+          </div>
+          <div class="col-md-4 m-0">
+              <mat-form-field class="w-100" appearance="outline">
+                  <mat-label>Cidade</mat-label>
+                  <input matInput type="text" name="cidade"
+                      formControlName='cidade' required>
+                  <mat-error class="mat-error" *ngIf="form.get('cidade').hasError('required')">A Cidade é obrigatória!</mat-error>
+              </mat-form-field>
+          </div>
+          <div class="col-md-4 m-0">
+              <mat-form-field class="w-100" appearance="outline">
+                  <mat-label>Bairro</mat-label>
+                  <input matInput type="text" name="bairro"
+                      formControlName='bairro' required>
+                  <mat-error class="mat-error" *ngIf="form.get('bairro').hasError('required')">O Bairro é obrigatório!</mat-error>
+              </mat-form-field>
+          </div>
+          <div class="col-md-4 m-0">
+              <mat-form-field class="w-100" appearance="outline">
+                  <mat-label>Logradouro</mat-label>
+                  <input matInput type="text" name="logradouro"
+                      formControlName='logradouro' required>
+                  <mat-error class="mat-error" *ngIf="form.get('logradouro').hasError('required')">O logradouro é obrigatório!</mat-error>
+              </mat-form-field>
+          </div>
+          <div class="col-md-4 m-0">
+            <mat-form-field class="w-100" appearance="outline">
+                <mat-label>Número</mat-label>
+
+                <!-- Tratar bug do chrome que acha que o campo está relacionado a um cartão de crédito -->
+                <input name="chrome-autofill-dummy1" style='display:none' disabled/>
+                <input name="chrome-autofill-dummy2" style='display:none' disabled/>
+                <!-- /Tratar bug do chrome que acha que o campo está relacionado a um cartão de crédito -->
+
+                <input matInput type="number"  placeholder="Número"
+                    formControlName='numeroEndereco' required>
+                <mat-error class="mat-error"*ngIf="form.get('numeroEndereco').hasError('required')">O número é obrigatório!</mat-error>
+                <mat-error class="mat-error"*ngIf="form.get('numeroEndereco').hasError('min')">Número inválido!</mat-error>
+
+            </mat-form-field>
+        </div>
+          <div class="col-md-4 m-0">
+              <mat-form-field class="w-100" appearance="outline">
+                  <mat-label>Complemento</mat-label>
+                  <input matInput type="text" name="complemento"
+                      formControlName='complemento'>
+              </mat-form-field>
+          </div>
+          <div class="col-md-4 m-0">
+              <mat-form-field class="w-100" appearance="outline">
+                  <mat-label>Referência</mat-label>
+                  <input matInput type="text" name="estado"
+                      formControlName='referencia'>
+              </mat-form-field>
+          </div>
+        </div>
+      </div>
+
+      
+
+      <app-entregadores-veiculos (onChange)="onChangeVehicles($event)" *ngIf="subPagesList[subPage] === 'Forma de Condução'"></app-entregadores-veiculos>
+      
+      <div class="card pb-0 " *ngIf="subPagesList[subPage] === 'Forma de Condução' && needCnh()">
+        <div class="card-header w-100" aria-controls="collapseFilter">
+          <h5>Dados da Habilitação</h5>
+        </div>
+        <div class="card-body w-100">
+            <div class="col-md-4 m-0">
+              <mat-form-field class="w-100" appearance="outline">
+                  <mat-label>CNH</mat-label>
+                  <input required maxlength="11" matInput type="text" name="numeroCNH"
+                      style="text-transform: lowercase;" formControlName='numeroCNH'
+                        >
+                        <mat-error class="mat-error" *ngIf="form.get('numeroCNH').hasError('required')">
+                          Campo obrigatório!
+                      </mat-error>
+                      <mat-error class="mat-error" *ngIf="!form.get('numeroCNH').hasError('required') ">
+                        CNH inválido
+                      </mat-error>
+                </mat-form-field>
+            </div>
+
+            <div class=" col-md-4 m-0">
+              <mat-form-field class="w-100" appearance="outline">
+                  <mat-label>Categoria</mat-label>
+                  <mat-select required name="categoriaCNH"  formControlName="categoriaCNH" >
+
+                      <mat-option [value]="cat" *ngFor="let cat of categoriasCnh">
+                        {{cat}}
+                      </mat-option>
+
+                  </mat-select>
+                  <mat-error class="mat-error" *ngIf="form.get('categoriaCNH').hasError('required')">
+                    Campo obrigatório!
+                </mat-error>
+              </mat-form-field>
+            </div>
+
+            <div class="dt-field m-0 col-md-3">
+              <mat-form-field class="w-100" appearance="outline" id="y">
+                  <mat-label>Data de Expiração</mat-label>
+                  <input  name="expiracaoCNH" (change)="applyDataMascara($event.target.value, 'expiracaoCNH')"  placeholder="dd/mm/yyyy" id="field-DataFim"  formControlName="expiracaoCNH" matInput [matDatepicker]="picker3" />
+                  <mat-datepicker-toggle matSuffix [for]="picker3"></mat-datepicker-toggle>
+                  <mat-datepicker #picker3></mat-datepicker>
+                  <mat-error class="mat-error" *ngIf="form.get('expiracaoCNH').hasError('required')">O
+                      Campo Obrigatório!
+                  </mat-error>
+                  <mat-error class="mat-error" *ngIf="!form.get('expiracaoCNH').hasError('required')">
+                      Data inválida!
+                  </mat-error>
+              </mat-form-field>
+            </div>
+            <div class="row col-md-12">
+              <div class="col-md-4 img-preview">
+                <img id="img-src-cnh" [src]="form.value.urlFotoCNH" alt="">
+
+              </div>
+              <div class="col-md-9 m-0">
+                <file-upload multiple="false" fileslimit="2" (change)="onCnhFileChange($event)" formControlName="files2">
+                  <ng-template  #placeholder>
+                    <span class="upload-icon"><i class="fa fa-fw fa-upload"></i></span><br>
+                    <span class="text"><b>Arraste e solte</b> a imagem ou clique aqui.</span>
+                  </ng-template>
+                </file-upload>
+              </div>
+            </div>
+          </div>
+      </div>
+
+      <app-entregadores-dados-bancarios *ngIf="subPagesList[subPage] === 'Dados Financeiros'"></app-entregadores-dados-bancarios>
+
+
+      <div class="card pb-0 " *ngIf="subPagesList[subPage] === 'Skills'">
+        <div class="card-header w-100" aria-controls="collapseFilter">
+          <h5>Skills</h5>
+        </div>
+        <div class="card-body w-100">
+        <div class="col-12 m-0 mt-12 w-100">
+            <app-skill-selector *ngIf="isFormLoaded" [possibleSkills]="possibleSkills" [value]="form.value.habilidades" (onChange)="changeSkillList($event)"></app-skill-selector>
+        </div>
+
+        </div>
+
+      </div>
+
+
+    </app-side-nav>
+
+<!--  <div class="col-12 m-0 mt-12 w-100">
+              <app-skill-selector *ngIf="isFormLoaded" [possibleSkills]="possibleSkills" [value]="form.value.habilidades" (onChange)="changeSkillList($event)"></app-skill-selector>
+          </div> -->
+
+  </div>
+  <button *ngIf="auth.canWrite('entregadores')" type="submit" class="btn btn-primary align-right"
+      (click)="onSubmit(form)">Salvar</button>
+  <button *ngIf="form.get('id').value && auth.canDelete('entregadores')" class="btn btn-danger align-right"
+      (click)="confirm(form)">Excluir</button>
+  <br>
+</form>

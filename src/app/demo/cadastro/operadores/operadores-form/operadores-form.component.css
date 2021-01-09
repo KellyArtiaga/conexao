@@ -1,0 +1,49 @@
+ngb-tabset .tab-content {
+  background-color: transparent !important;
+}
+
+.card {
+  width: 100%;
+  display: flex;
+}
+
+.card-body {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.resumo-info {
+  display: flex;
+  flex-direction: column;
+  padding-top: 20px;
+}
+
+.resumo-row {
+  display: flex;
+  justify-content: space-between;
+}
+.resumo-row span {
+  margin-right: 30px;
+  color: #b8b9bd;
+}
+.resumo-total {
+  margin-top: 30px;
+  margin-bottom: 10px;
+  border-top: 1px solid #b8b9bd;
+}
+.img-preview img{
+  max-width: 100%;
+}
+
+.mt-30 {
+  margin-top: 30px;
+}
+
+.tab-icon{
+  color:#1de9b6 ;
+  font-size: 18px;
+  padding:0;
+  margin-left:5px;
+  margin-bottom:-5px;
+
+}

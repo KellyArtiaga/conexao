@@ -1,0 +1,32 @@
+<div class="row">
+  <div class="col-sm-12">
+    <h5>Novo Entregador</h5>
+    <hr>
+    <mat-tab-group>
+      <mat-tab label="Dados do Entregador">
+        <app-entregadores-dados-pessoais></app-entregadores-dados-pessoais>
+      </mat-tab>
+
+      <mat-tab label="Avaliação" *ngIf="areOtherTabsAvailable()">
+        <app-entregadores-avaliacao></app-entregadores-avaliacao>
+      </mat-tab>
+      <mat-tab label="Status" *ngIf="areOtherTabsAvailable()">
+        <app-entregadores-status></app-entregadores-status>
+      </mat-tab>
+      <!-- <mat-tab label="Servicos" *ngIf="areOtherTabsAvailable()">
+      </mat-tab>
+      <mat-tab label="Contrato" *ngIf="areOtherTabsAvailable()">
+      </mat-tab>
+      <mat-tab label="Primeiro Acesso" *ngIf="areOtherTabsAvailable()">
+      </mat-tab> -->
+    </mat-tab-group>
+  </div>
+</div>
+<div class="row">
+  <div class="header deep-purple p-24 col-md-12" fxLayout="column" fxLayoutAlign="center center" fxLayout.gt-xs="row"
+    fxLayoutAlign.gt-xs="space-between center">
+    <a id="btn-voltar" class="btn btn-primary mt-16 mt-sm-0" [routerLink]="['/cadastro/entregadores']">
+      <span class="m-2"><i class="feather icon-arrow-left"></i> Voltar</span>
+    </a>
+  </div>
+</div>

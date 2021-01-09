@@ -1,0 +1,200 @@
+<div class="row m-0 p-0" *ngIf="!showForm">
+  <div class="header deep-purple p-24 col-md-12" fxLayout="column" fxLayoutAlign="center center" fxLayout.gt-xs="row"
+    fxLayoutAlign.gt-xs="space-between center">
+    <a  *ngIf="auth.canWrite('empresas')"  id="btn-add" class="btn-add mt-16 mt-sm-0 align-right" (click)="openForm(null)">
+      <span class="m-2"><i class="icon-add feather icon-plus"></i> Nova Filial</span>
+    </a>
+  </div>
+</div>
+<div *ngIf="showForm" class="row m-0 pt-4">
+  <form  class="col-md-12 m-0 p-0" [formGroup]="form" (submit)="onSubmit(form)">
+    <app-card cardTitle="Dados" >
+      <div class="row">
+        <div class="col-md-3 m-0">
+          <mat-form-field class="w-100" appearance="outline">
+            <mat-label>Razão Social</mat-label>
+            <input formControlName="razaoSocial" matInput type="text"  name="codigo" required>
+            <mat-error class="mat-error" *ngIf="form.get('razaoSocial').hasError('required')">
+              Campo Obrigatório!</mat-error>
+          </mat-form-field>
+        </div>
+        <div class="col-md-3 m-0">
+          <mat-form-field class="w-100" appearance="outline">
+            <mat-label>CNPJ</mat-label>
+            <input formControlName="cnpj" [textMask]="{mask: cnpjMask}" matInput type="text"  name="codigo" required>
+            <mat-error class="mat-error" *ngIf="form.get('cnpj').hasError('required')">
+              Campo Obrigatório!</mat-error>
+            <mat-error class="mat-error" *ngIf="!form.get('cnpj').hasError('required')">
+              CNPJ Inválido!</mat-error>
+          </mat-form-field>
+        </div>
+        <div class="col-md-3 m-0">
+          <mat-form-field class="w-100" appearance="outline">
+            <mat-label>Inscrição Municipal</mat-label>
+            <input formControlName="inscricaoMunicipal" (keypress)="numberOnly($event)" matInput type="text"  name="codigo" required>
+            <mat-error class="mat-error" *ngIf="form.get('inscricaoMunicipal').hasError('required')">
+              Campo Obrigatório!</mat-error>
+          </mat-form-field>
+        </div>
+        <div class="col-md-3 m-0">
+          <mat-form-field class="w-100" appearance="outline">
+            <mat-label>Nº da Loja</mat-label>
+            <input formControlName="identificador" matInput type="number"  name="codigo">
+            <mat-error class="mat-error"*ngIf="form.get('identificador').hasError('min')">Número inválido!</mat-error>
+          </mat-form-field>
+        </div>
+
+        <div class="col-md-3 m-0">
+          <mat-form-field class="w-100" appearance="outline">
+            <mat-label>Telefone</mat-label>
+            <input maxlength="15" matInput type="text" name="telefoneContato"
+              formControlName='telefoneContato' [value]="form.value.telefoneContato | phone" required>
+              <mat-error class="mat-error" *ngIf="form.get('telefoneContato').hasError('required')">
+                Campo obrigatório!
+              </mat-error>
+              <mat-error class="mat-error" *ngIf="!form.get('telefoneContato').hasError('required') ">
+                Número de telefone inválido
+              </mat-error>
+          </mat-form-field>
+        </div>
+
+        <div class="col-md-3 m-0">
+          <mat-form-field class="w-100" appearance="outline">
+            <mat-label>Centro de custo</mat-label>
+            <input formControlName="centroCusto" matInput type="text"  name="codigo">
+          </mat-form-field>
+        </div>
+
+        <div class="col-3 m-0">
+          <div class="form-check">
+              <mat-checkbox formControlName='active' name='active' type="checkbox"
+                  id="activeMaster">Ativar</mat-checkbox>
+          </div>
+      </div>
+      </div>
+    </app-card>
+    <app-card cardTitle="Endereço" >
+      <div class="row">
+        <div class="col-md-3 m-0">
+          <mat-form-field class="w-100" appearance="outline">
+            <mat-label>CEP</mat-label>
+            <input formControlName="cep" appCep (onCepFound)="cepFound($event)" [textMask]="{mask: cepMask}" matInput type="text"  name="codigo">
+          </mat-form-field>
+        </div>
+        <div class="col-md-3 m-0">
+          <mat-form-field class="w-100" appearance="outline">
+            <mat-label>Estado</mat-label>
+            <input formControlName="uf" matInput type="text"  name="codigo" required>
+            <mat-error class="mat-error" *ngIf="form.get('uf').hasError('required')">
+              Campo Obrigatório!</mat-error>
+          </mat-form-field>
+        </div>
+        <div class="col-md-3 m-0">
+          <mat-form-field class="w-100" appearance="outline">
+            <mat-label>Cidade</mat-label>
+            <input formControlName="cidade" matInput type="text"  name="codigo" required>
+            <mat-error class="mat-error" *ngIf="form.get('cidade').hasError('required')">
+              Campo Obrigatório!</mat-error>
+          </mat-form-field>
+        </div>
+        <div class="col-md-3 m-0">
+          <mat-form-field class="w-100" appearance="outline">
+            <mat-label>Bairro</mat-label>
+            <input formControlName="bairro" matInput type="text"  name="codigo" required>
+            <mat-error class="mat-error" *ngIf="form.get('bairro').hasError('required')">
+              Campo Obrigatório!</mat-error>
+          </mat-form-field>
+        </div>
+        <div class="col-md-3 m-0">
+          <mat-form-field class="w-100" appearance="outline">
+            <mat-label>Logradouro</mat-label>
+            <input formControlName="logradouro" matInput type="text"  name="codigo" required>
+            <mat-error class="mat-error" *ngIf="form.get('logradouro').hasError('required')">
+              Campo Obrigatório!</mat-error>
+          </mat-form-field>
+        </div>
+        <div class="col-md-3 m-0">
+          <mat-form-field class="w-100" appearance="outline">
+            <mat-label>Número</mat-label>
+            <input formControlName="numero" matInput type="text"  name="codigo" required>
+            <mat-error class="mat-error" *ngIf="form.get('numero').hasError('required')">
+              Campo Obrigatório!</mat-error>
+          </mat-form-field>
+        </div>
+        <div class="col-md-3 m-0">
+          <mat-form-field class="w-100" appearance="outline">
+            <mat-label>Complemento</mat-label>
+            <input formControlName="complemento" matInput type="text"  name="codigo" >
+          </mat-form-field>
+        </div>
+        <div class="col-md-3 m-0">
+          <mat-form-field class="w-100" appearance="outline">
+            <mat-label>Referência</mat-label>
+            <input formControlName="referencia" matInput type="text"  name="codigo" >
+          </mat-form-field>
+        </div>
+      </div>
+    </app-card>
+    <div class="float-right pb-4">
+      <button class="btn btn-primary" type="submit" >{{editingFilialId ? "Salvar" : "Inserir"}}</button>
+      <button class="btn btn-danger" (click)="closeForm()" type="button" >Cancelar</button>
+    </div>
+  </form>
+</div>
+
+<div class="row m-0 p-0"  *ngIf="!showForm">
+  <div class="col-md-12 m-0 p-0">
+    <app-card cardTitle="Lista de Filiais" >
+      <div class="row">
+        <mat-table matTableExporter #exporter="matTableExporter" [dataSource]="dataSource" class="table-hover main-table" *ngIf="!noResult">
+
+          <ng-container matColumnDef="razaoSocial">
+            <mat-header-cell *matHeaderCellDef> Razão Social </mat-header-cell>
+            <mat-cell *matCellDef="let row"> {{row.razaoSocial}} </mat-cell>
+          </ng-container>
+
+          <ng-container matColumnDef="cnpj">
+            <mat-header-cell *matHeaderCellDef> CNPJ </mat-header-cell>
+            <mat-cell *matCellDef="let row"> {{row.cnpj}} </mat-cell>
+          </ng-container>
+
+          <ng-container matColumnDef="nomeContato">
+            <mat-header-cell *matHeaderCellDef> Nome </mat-header-cell>
+            <mat-cell *matCellDef="let row"> {{row.nomeContato}} </mat-cell>
+          </ng-container>
+
+          <ng-container matColumnDef="telefoneContato">
+            <mat-header-cell *matHeaderCellDef> Telefone </mat-header-cell>
+            <mat-cell *matCellDef="let row"> {{row.telefoneContato}} </mat-cell>
+          </ng-container>
+
+          <ng-container matColumnDef="active">
+            <mat-header-cell *matHeaderCellDef> Status </mat-header-cell>
+            <mat-cell *matCellDef="let row"> {{ row.active? 'Ativo':'Inativo' }} </mat-cell>
+          </ng-container>
+
+          <!-- Action Column -->
+          <ng-container matColumnDef="buttons">
+            <th class="alinhamento" mat-header-cell *matHeaderCellDef id="titColumn-empresa-acoes" scope="col">
+              Ações
+            </th>
+            <td class="action-btn" mat-cell *matCellDef="let row">
+              <button *ngIf="auth.canWrite('empresas')" class="mr-2" id="btn-editar" (click)="openForm(row.id)">
+                <i class="icon-edit feather icon-edit"></i>
+              </button>
+              <button *ngIf="auth.canDelete('empresas')" class="mr-2" id="btn-excluir" (click)="delete(row)">
+                <i class="icon-remove feather icon-trash"></i>
+              </button>
+            </td>
+          </ng-container>
+          <mat-header-row mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+          <mat-row mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+        </mat-table>
+      </div>
+      <div class="col-xl-12 mb-2 text-center" *ngIf="noResult">
+        <mat-label class="no-result">Nenhum Resultado Encontrado</mat-label>
+      </div>
+    </app-card>
+  </div>
+</div>
+

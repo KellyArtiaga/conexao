@@ -1,0 +1,11 @@
+<!-- nav sidebar -->
+<div class="navbar-brand header-logo">
+  <a [routerLink]="['/dashboard/default/']" class="b-brand">
+    <div class="b-bg">
+      <img class="logomarca" src="assets/icon/header-logo.svg" alt="Logomarca">
+    </div>
+    <span class="b-title">Conexão Delivery</span>
+  </a>
+  <a href="javascript:" class="mobile-menu" [ngClass]="{'on' : navCollapsed}" id="mobile-collapse"
+    (click)="navCollapse()"><span></span></a>
+</div>

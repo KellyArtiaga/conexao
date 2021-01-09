@@ -1,0 +1,144 @@
+ngb-tabset .tab-content {
+  background-color: transparent !important;
+}
+
+.card {
+  width: 100%;
+  display: flex;
+}
+
+.card-body {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+ul{
+  padding:none;
+}
+ul.checkList{
+  list-style: none;
+}
+
+ol, ul, dl{
+  padding: 0 0 0 15px!important;
+  margin-bottom: 0.5rem;
+}
+
+ul li:before {
+  padding:none;
+}
+
+ul.checkList li:before {
+  padding:none;
+  list-style: none;
+  content: '✓ ';
+}
+
+.resumo-info {
+  display: flex;
+  flex-direction: column;
+  padding-top: 20px;
+  font-size: 0.8rem;
+}
+
+.mtop {
+  margin-top: 20px;
+}
+
+.resumo-row {
+  display: flex;
+  justify-content: space-between;
+  margin: 5px 0;
+}
+.resumo-row span {
+  margin-right: 30px;
+  color: #b8b9bd;
+}
+.resumo-total {
+  margin-top: 30px;
+  margin-bottom: 10px;
+  border-top: 1px solid #b8b9bd;
+}
+.img-preview img{
+  max-width: 100%;
+}
+
+.tb {
+  overflow-x: auto;
+  display: flex;
+  flex-direction: column;
+}
+.tb-row {
+  display: flex;
+  margin: 10px 0;
+}
+.alignCenter {
+  align-items: center;
+}
+.row-i {
+  display: flex;
+  width: 100%;
+}
+.tb-row > div{
+  width: 100%;
+  margin: 0 20px;
+  min-width: 130px;
+}
+.tb-row input {
+  width: 100%;
+  height: 50px;
+  margin: 0 20px;
+  border: 1px solid rgba(0, 0, 0, 0.125);
+  border-radius: 5px;
+  min-width: 130px;
+}
+
+.action-btn {
+  cursor: pointer;
+}
+
+.lastFaixa td:first-child {
+    border-left:8px solid orange;
+    border-radius: 6px;
+    height: auto;
+}
+
+.lastFaixa {
+    background: rgba(245, 245, 245, 0.349);
+}
+
+.lastFaixa:hover  button, .lastFaixa:focus button {
+   background:  rgb(239, 239, 239);
+   border-radius: 50%;
+}
+
+.form-control {
+    background: white;
+    height: auto;
+    min-width: 100px;
+}
+
+.form-control:disabled, .form-control[readonly] {
+    background-color: rgba(245, 245, 245, 0.507);
+    cursor: no-drop;
+    border: 1px solid rgb(239, 239, 239);
+    opacity: 0.8;
+}
+
+.noitems {
+  margin: 10px 0;
+}
+
+.none{display:none}
+.block{display:block}
+
+@media (min-width: 1000px) {
+  .info-fixed{
+    position: fixed;
+    margin-right:15px;
+    margin-left:15px;
+    right:0;
+    width: 20%;
+    display: inline-table;
+  }
+}

@@ -1,0 +1,12 @@
+<div class="skills-container">
+  <input placeholder="teste" autocomplete="off" #skillInput name="nom" (focus)="onFilterChange($event.target.value)" (input)="onFilterChange($event.target.value)" type="text" [value]="placeholder" [defaultValue]="placeholder" onfocus="this.value='';" onblur="if(this.value=='')this.value=this.defaultValue;">
+  <div class="skills-list" #skillList>
+    <ng-container  *ngFor="let skill of showSkills; let index = index">
+      <span [class.selected]="selectedIndex === index" *ngIf="index < 4" (click)="selectByFilter(index)">
+        {{skill.nome}}
+      </span>
+    </ng-container>
+  </div>
+
+  <div class="skill-card" (click)="changeSelectedCard(index)" [class.clickable]="selectable" [class.selected]="selectedCard === index" *ngFor="let skill of selectedSkills; let index = index">{{skill.nome}} <span (click)="removeSelected(index)"><i class="icon-remove feather icon-trash"></i></span></div>
+</div>

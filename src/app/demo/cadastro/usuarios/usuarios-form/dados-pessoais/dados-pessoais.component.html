@@ -1,0 +1,83 @@
+<form name="form" [formGroup]="form" novalidate>
+  <div class="row p-0 m-0 align-items-center">
+    <div class="card pb-0 mt-30 ">
+      <div class="card-header w-100"
+          aria-controls="collapseFilter">
+          <h5>Usuário</h5>
+      </div>
+      <div class="card-body w-100" id="collapseFilter" >
+        <div class="col-md-2 m-0">
+          <mat-form-field class="w-100" appearance="outline">
+              <mat-label>Nome</mat-label>
+              <input matInput type="text" placeholder="Usuário" name="codigo"
+                  formControlName='name' required>
+              <mat-error class="mat-error" *ngIf="form.get('name').hasError('required')">Campo Obrigatório!</mat-error>
+          </mat-form-field>
+        </div>
+        <div class="col-md-4 m-0">
+          <mat-form-field class="w-100" appearance="outline">
+              <mat-label>Email</mat-label>
+              <input matInput formControlName="login" type="text" maxlength="100" autocomplete="off"
+                  required />
+                  <mat-error class="mat-error" *ngIf="form.get('login').hasError('required')">
+                    Campo obrigatório!
+                </mat-error>
+                <mat-error class="mat-error" *ngIf="!form.get('login').hasError('required') ">
+                  Email inválido
+                </mat-error>
+          </mat-form-field>
+        </div>
+        <div class=" col-md-3 m-0">
+          <mat-form-field class="w-100" appearance="outline">
+            <mat-label>Tipo de Perfil</mat-label>
+            <mat-select required name="role-name" formControlName="roles" >
+                <mat-option *ngFor="let role of roles" [value]="role">
+                    {{changeRolesNames(role)}}
+                </mat-option>
+            </mat-select>
+            <mat-error class="mat-error" *ngIf="form.get('roles').hasError('required')">
+              Campo obrigatório!
+            </mat-error>
+          </mat-form-field>
+      </div>
+      <ng-container *ngIf="showOperadorField()">
+        <div class="col-md-3 m-0" *ngIf="!isAdminRole">
+          <mat-form-field class="w-100" appearance="outline">
+            <mat-label>Operador</mat-label>
+            <mat-select  name="role-name" formControlName="tenant" [compareWith]="compare">
+              <mat-option *ngFor="let t of tenants" [value]="t">
+                {{t.name}}
+              </mat-option>
+            </mat-select>
+            <mat-error class="mat-error" *ngIf="form.get('tenant').hasError('required')">
+              Campo obrigatório!
+            </mat-error>
+          </mat-form-field>
+        </div>
+      </ng-container>
+
+      <ng-container *ngIf="showEmpresaField()">
+        <div class="col-md-3 m-0">
+          <mat-form-field class="w-100" appearance="outline">
+            <mat-label>Empresa</mat-label>
+            <mat-select  name="role-name" formControlName="companyRegistry" [compareWith]="compareB">
+              <mat-option *ngFor="let t of companies" [value]="t.cnpj">
+                  {{t.razaoSocial}}
+              </mat-option>
+            </mat-select>
+            <mat-error class="mat-error" *ngIf="form.get('companyRegistry').hasError('required')">
+              Campo obrigatório!
+            </mat-error>
+          </mat-form-field>
+        </div>
+      </ng-container>
+      </div>
+    </div>
+  </div>
+  <button  type="submit" class="btn btn-primary align-right" (click)="onSubmit(form)">Salvar</button>
+  <button *ngIf="form.get('id').value" type="button" class="btn btn-info align-right"
+      (click)="onRecoverCredentials(form)">Recuperar Senha</button>
+  <button  *ngIf="form.get('id').value" type="button" class="btn btn-danger align-right"
+  (click)="onDelete(form)">Excluir</button>
+  <br>
+</form>

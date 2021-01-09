@@ -1,0 +1,67 @@
+<div class="row m-0" >
+  <div class="header deep-purple p-24 col-md-12" fxLayout="column" fxLayoutAlign="center center" fxLayout.gt-xs="row"
+    fxLayoutAlign.gt-xs="space-between center">
+    <a *ngIf="auth.canWrite('operadores/editar/:operadorId/modulos/novo')" id="btn-add" class="btn-add mt-16 mt-sm-0 align-right" [routerLink]="['/cadastro/operadores/editar/' + operadorId + '/modulos/novo']">
+      <span class="m-2"><i class="icon-add feather icon-plus"></i> Novo Módulo</span>
+    </a>
+  </div>
+</div>
+<div class="row m-0">
+  <h5 class="mt-b" style="font-size: 0.9rem;">Lista de Precificações (Módulos)</h5><hr>
+  <div class="col-md-12 bg-gray pt-4 pb-4 mb-2 mt-0">
+    <div class="card-deck row d-flex align-items-stretch" >
+      <div class="p-2" *ngFor="let item of arrayServicos">
+        <div class="card center w-100 " style="max-width: 17rem; min-width: 10rem;">
+          <div class="card-header center p-0" style="width: 100%; height: 140px;">
+            <img class="card-img-top" [src]="item.modulo === 'DELIVERY' ? 'assets/images/delivery.png' : 'assets/images/ecommerce.png'" style="display: flex;width: fit-content; max-width: 130px; height: auto;" alt="Card image cap">
+          </div>
+          <div class="card-footer row justify-content-center w-100">
+            <span class="text-muted">{{item.modulo}}</span>
+            <td class="action-btn" style="float:right">
+              <button class="ml-2 " id="btn-editar" (click)="edit(item)" *ngIf="auth.canWrite('empresas/editar/:empresaId/modulos/editar/:id')">
+                <i class="icon-edit feather icon-edit"></i>
+              </button>
+            </td>
+          </div>
+        </div>
+      </div>
+      <div *ngIf="noResult" class="pl-4"> Nenhuma precificação registrada.</div>
+    </div>
+  </div>
+
+
+  <div class="col-xl-12" style="display:none">
+    <app-card cardTitle="Lista de Precificação" cardClass="code-table" blockClass="pb-0 pt-0">
+      <mat-table matTableExporter #exporter="matTableExporter" [dataSource]="dataSource" class="table-hover main-table" *ngIf="!noResult">
+
+        <!-- Data Column -->
+        <ng-container matColumnDef="modulo">
+          <mat-header-cell *matHeaderCellDef> Módulo </mat-header-cell>
+          <mat-cell *matCellDef="let row"> {{row.modulo}} </mat-cell>
+        </ng-container>
+
+        <!-- Action Column -->
+        <ng-container matColumnDef="buttons">
+          <th class="alinhamento" mat-header-cell *matHeaderCellDef id="titColumn-empresa-acoes" scope="col">
+            Ações
+          </th>
+          <td class="action-btn" mat-cell *matCellDef="let row">
+            <button class="mr-2" id="btn-editar" (click)="edit(row)" *ngIf="auth.canWrite('operadores/editar/:operadorId/modulos/editar/:id')">
+              <i class="icon-edit feather icon-edit"></i>
+            </button>
+            <!-- <button class="mr-2" id="btn-excluir" (click)="confirmDelete(row)">
+              <i class="icon-remove feather icon-trash"></i>
+            </button> -->
+          </td>
+        </ng-container>
+
+        <mat-header-row mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+        <mat-row mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+      </mat-table>
+
+      <div class="col-xl-12 mb-2 pt-4 pb-3 text-center " *ngIf="noResult">
+        <mat-label class="no-result">Nenhum Resultado Encontrado</mat-label>
+      </div>
+    </app-card>
+  </div>
+</div>
